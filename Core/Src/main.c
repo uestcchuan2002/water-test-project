@@ -123,9 +123,11 @@ int main(void)
     HAL_ADC_Start(&hadc1);
     if (HAL_ADC_PollForConversion(&hadc1, 200) == HAL_OK)
     {
-        uint32_t val = HAL_ADC_GetValue(&hadc1);
-        uint32_t Volt = (3300 * val) >> 12;
-        printf("val:%d, Volt:%d\r\n", val, Volt);
+        uint32_t raw = HAL_ADC_GetValue(&hadc1);
+        uint16_t adc_val = (uint16_t)(raw & 0xFFF);
+        uint16_t Volt = (uint16_t)(((uint32_t)3300 * adc_val) >> 12);
+        uint16_t Volt_filter = Filter_Update(&m_median5, &m_movingavg, Volt);
+        printf("Volt:%d Volt_filter:%d\r\n", Volt, Volt_filter);
     }
     HAL_Delay(500);
   }

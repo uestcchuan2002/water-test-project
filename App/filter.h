@@ -6,6 +6,8 @@
 
 #define MEDIAN_N   5
 #define AVG_N      10
+#define FILTER_DIFF_MAX     5
+#define FILTER_ABN_MAX      3
 
 #define SWAP_U16(a, b) do { \
     uint16_t t = (a);        \
@@ -18,6 +20,8 @@ typedef struct {
     uint16_t buf[MEDIAN_N];
     uint8_t  idx;
     uint8_t  count;
+    uint16_t last;
+    uint8_t abnormal_count;
 } Median5_t;
 
 typedef struct {
