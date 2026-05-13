@@ -13,10 +13,14 @@ void MovingAvg_Init(MovingAvg_t *f)
 /* 5点中值滤波：排序网络，比通用排序更适合MCU */
 uint16_t Median5_Update(Median5_t *f, uint16_t in)
 {
+    /* 判断是否需要剔除异常值 */
     if (f->count > 0) {
+        /* 最近一次的值 */
         uint16_t base = f->last;
+        /* 计算差值 |in - base| */
         uint16_t diff = (in > base) ? (in - base) : (base - in);
 
+        /* 如果超过阈值，则异常值计数加1 */
         if (diff > FILTER_DIFF_MAX) {
             f->abnormal_count++;
 
@@ -41,6 +45,7 @@ uint16_t Median5_Update(Median5_t *f, uint16_t in)
         tmp[i] = f->buf[i];
     }
 
+    // 插入排序
     for (uint8_t i = 1; i < f->count; i++) {
         uint16_t key = tmp[i];
         int8_t j = i - 1;
