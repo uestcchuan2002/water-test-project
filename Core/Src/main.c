@@ -24,7 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
-#include "usart.h"
+#include "filter.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,6 +98,11 @@ int main(void)
     printf("hello stm32\r\n");
     printf("value = %d\r\n", 123);
 
+    /* 中值滑动滤波算法测试 */
+    Median5_t m_median5;
+    MovingAvg_t m_movingavg;
+    Median5_Init(&m_median5);
+    MovingAvg_Init(&m_movingavg);    
   /* USER CODE END 2 */
 
   /* Infinite loop */

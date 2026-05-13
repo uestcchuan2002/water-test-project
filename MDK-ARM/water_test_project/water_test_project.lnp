@@ -1,5 +1,6 @@
 --cpu=Cortex-M4.fp.sp
 "water_test_project\startup_stm32f407xx.o"
+"water_test_project\filter.o"
 "water_test_project\main.o"
 "water_test_project\gpio.o"
 "water_test_project\usart.o"
