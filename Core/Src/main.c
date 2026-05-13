@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -94,6 +96,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_TIM3_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
     printf("hello stm32\r\n");
     printf("value = %d\r\n", 123);
@@ -102,7 +106,11 @@ int main(void)
     Median5_t m_median5;
     MovingAvg_t m_movingavg;
     Median5_Init(&m_median5);
-    MovingAvg_Init(&m_movingavg);    
+    MovingAvg_Init(&m_movingavg);
+
+	/* 以中断的方式启动ADC转换 */
+/* 	HAL_ADC_Start_IT(&hadc1);
+    HAL_TIM_Base_Start(&htim3); */
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,8 +120,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    printf("this is a test\r\n");
-    HAL_Delay(1000);
+    HAL_ADC_Start(&hadc1);
+    if (HAL_ADC_PollForConversion(&hadc1, 200) == HAL_OK)
+    {
+        uint32_t val = HAL_ADC_GetValue(&hadc1);
+        uint32_t Volt = (3300 * val) >> 12;
+        printf("val:%d, Volt:%d\r\n", val, Volt);
+    }
+    HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
@@ -164,7 +178,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/*转换完成中断回调*/
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+    /*定时器中断启动单通道转换*/
+    if(hadc->Instance == ADC1)
+    {
+        uint32_t val=HAL_ADC_GetValue(hadc);
+        uint32_t Volt=(3300*val)>>12;
+        printf("val:%d, Volt:%d\r\n",val,Volt);
+    }
+}
 /* USER CODE END 4 */
 
 /**
