@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp.sp
+"water_test_project\startup_stm32f407xx.o"
+"water_test_project\main.o"
+"water_test_project\gpio.o"
+"water_test_project\usart.o"
+"water_test_project\stm32f4xx_it.o"
+"water_test_project\stm32f4xx_hal_msp.o"
+"water_test_project\stm32f4xx_hal_uart.o"
+"water_test_project\stm32f4xx_hal_rcc.o"
+"water_test_project\stm32f4xx_hal_rcc_ex.o"
+"water_test_project\stm32f4xx_hal_flash.o"
+"water_test_project\stm32f4xx_hal_flash_ex.o"
+"water_test_project\stm32f4xx_hal_flash_ramfunc.o"
+"water_test_project\stm32f4xx_hal_gpio.o"
+"water_test_project\stm32f4xx_hal_dma_ex.o"
+"water_test_project\stm32f4xx_hal_dma.o"
+"water_test_project\stm32f4xx_hal_pwr.o"
+"water_test_project\stm32f4xx_hal_pwr_ex.o"
+"water_test_project\stm32f4xx_hal_cortex.o"
+"water_test_project\stm32f4xx_hal.o"
+"water_test_project\stm32f4xx_hal_exti.o"
+"water_test_project\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "water_test_project\water_test_project.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "water_test_project.map" -o water_test_project\water_test_project.axf
