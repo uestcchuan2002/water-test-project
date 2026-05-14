@@ -46,3 +46,4 @@ water_test_project\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal
 water_test_project\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 water_test_project\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 water_test_project\freertos.o: ../Bsp/led.h
+water_test_project\freertos.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h

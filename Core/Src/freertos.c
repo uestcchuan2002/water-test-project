@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "led.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,6 +55,13 @@ const osThreadAttr_t taskLED_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for taskADC */
+osThreadId_t taskADCHandle;
+const osThreadAttr_t taskADC_attributes = {
+  .name = "taskADC",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -61,6 +69,7 @@ const osThreadAttr_t taskLED_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void appTaskLED(void *argument);
+void appTaskADC(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -80,6 +89,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -93,6 +103,9 @@ void MX_FREERTOS_Init(void) {
   /* Create the thread(s) */
   /* creation of taskLED */
   taskLEDHandle = osThreadNew(appTaskLED, NULL, &taskLED_attributes);
+
+  /* creation of taskADC */
+  taskADCHandle = osThreadNew(appTaskADC, NULL, &taskADC_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -118,10 +131,37 @@ void appTaskLED(void *argument)
   for(;;)
   {
     LED0_Troggle();
-	LED1_Troggle();
     osDelay(500);
   }
   /* USER CODE END appTaskLED */
+}
+
+/* USER CODE BEGIN Header_appTaskADC */
+/**
+* @brief Function implementing the taskADC thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_appTaskADC */
+void appTaskADC(void *argument)
+{
+  /* USER CODE BEGIN appTaskADC */
+  xMyAdcTaskHandle = xTaskGetCurrentTaskHandle();
+  uint32_t val = 0, Volt = 0;
+  /* Infinite loop */
+  for (;;)
+  {
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    for (uint8_t i = 0; i < BATCH_DATA_LEN; i++)
+    {
+        val = DataBuffer[i];
+        Volt = (3300 * val) >> 12;
+        printf("ADC_IN%d, val:%d, Volt:%d\r\n", i + 5, val, Volt);
+    }
+    printf("\r\n");
+    LED1_Troggle();
+  }
+  /* USER CODE END appTaskADC */
 }
 
 /* Private application code --------------------------------------------------*/

@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "adc.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -29,12 +30,12 @@
 #include "stdio.h"
 #include "filter.h"
 #include "led.h"
-
+#include "task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+uint32_t DataBuffer[BATCH_DATA_LEN];
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -50,7 +51,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+TaskHandle_t xMyAdcTaskHandle = NULL;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,6 +99,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
@@ -114,6 +116,9 @@ int main(void)
 	/* 以中断的方式启动ADC转换 */
 /* 	HAL_ADC_Start_IT(&hadc1);
     HAL_TIM_Base_Start(&htim3); */
+    /* 以DMA的方式启动ADC转换 */
+	HAL_ADC_Start_DMA(&hadc1, DataBuffer, BATCH_DATA_LEN);
+	HAL_TIM_Base_Start(&htim3);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -132,18 +137,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_ADC_Start(&hadc1);
-    if (HAL_ADC_PollForConversion(&hadc1, 200) == HAL_OK)
-    {
-        uint32_t raw = HAL_ADC_GetValue(&hadc1);
-        uint16_t adc_val = (uint16_t)(raw & 0xFFF);
-        uint16_t Volt = (uint16_t)(((uint32_t)3300 * adc_val) >> 12);
-        uint16_t Volt_filter = Filter_Update(&m_median5, &m_movingavg, Volt);
-        printf("Volt:%d Volt_filter:%d\r\n", Volt, Volt_filter);
-    }
-	LED0_Troggle();
-	LED1_Troggle();
-    HAL_Delay(500);
+    
   }
   /* USER CODE END 3 */
 }
@@ -194,17 +188,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-/*转换完成中断回调*/
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-    /*定时器中断启动单通道转换*/
-    if(hadc->Instance == ADC1)
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    // 👇 只处理 ADC1（你用哪个就写哪个）
+    if(hadc->Instance == ADC1)  
     {
-        uint32_t val=HAL_ADC_GetValue(hadc);
-        uint32_t Volt=(3300*val)>>12;
-        printf("val:%d, Volt:%d\r\n",val,Volt);
+        vTaskNotifyGiveFromISR(xMyAdcTaskHandle, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     }
 }
+
 /* USER CODE END 4 */
 
 /**

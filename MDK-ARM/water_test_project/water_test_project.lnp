@@ -5,6 +5,7 @@
 "water_test_project\gpio.o"
 "water_test_project\freertos.o"
 "water_test_project\adc.o"
+"water_test_project\dma.o"
 "water_test_project\tim.o"
 "water_test_project\usart.o"
 "water_test_project\stm32f4xx_it.o"

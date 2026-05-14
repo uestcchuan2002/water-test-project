@@ -34,7 +34,6 @@ water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 water_test_project\main.o: ../Core/Inc/FreeRTOSConfig.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
@@ -44,8 +43,10 @@ water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/R
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 water_test_project\main.o: ../Core/Inc/adc.h
+water_test_project\main.o: ../Core/Inc/dma.h
 water_test_project\main.o: ../Core/Inc/tim.h
 water_test_project\main.o: ../Core/Inc/usart.h
 water_test_project\main.o: ../Core/Inc/gpio.h
