@@ -29,6 +29,8 @@ water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sram.h
+water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_fsmc.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -50,7 +52,11 @@ water_test_project\main.o: ../Core/Inc/dma.h
 water_test_project\main.o: ../Core/Inc/tim.h
 water_test_project\main.o: ../Core/Inc/usart.h
 water_test_project\main.o: ../Core/Inc/gpio.h
+water_test_project\main.o: ../Core/Inc/fsmc.h
 water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
 water_test_project\main.o: ../App/filter.h
 water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
 water_test_project\main.o: ../Bsp/led.h
+water_test_project\main.o: ../Bsp/lcd.h
+water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
+water_test_project\main.o: ../App/adc_ui.h

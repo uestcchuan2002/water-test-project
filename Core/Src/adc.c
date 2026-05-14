@@ -99,6 +99,7 @@ void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
 }
 
 void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)

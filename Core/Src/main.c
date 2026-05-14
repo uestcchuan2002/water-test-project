@@ -24,6 +24,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "fsmc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -31,6 +32,8 @@
 #include "filter.h"
 #include "led.h"
 #include "task.h"
+#include "lcd.h"
+#include "adc_ui.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,10 +106,29 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
+  MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
     printf("hello stm32\r\n");
     printf("value = %d\r\n", 123);
+	lcd_init();
 
+	ui_water_data_t ui_data;
+
+    ui_draw_static();
+
+    
+        /* 实际项目中这里可以从 Queue 里接收传感器处理后的数据 */
+        ui_data.ph = 7.21f;
+        ui_data.temp = 25.6f;
+        ui_data.turbidity = 12.0f;
+        ui_data.conductivity = 865.0f;
+        ui_data.rs485_ok = 1;
+        ui_data.alarm = 0;
+
+        ui_update_data(&ui_data);
+
+        
+    
     /* 中值滑动滤波算法测试 */
     Median5_t m_median5;
     MovingAvg_t m_movingavg;
