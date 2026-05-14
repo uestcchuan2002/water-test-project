@@ -1,0 +1,15 @@
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
+water_test_project\event_groups.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+water_test_project\event_groups.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stddef.h
+water_test_project\event_groups.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdint.h
+water_test_project\event_groups.o: ../Core/Inc/FreeRTOSConfig.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+water_test_project\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

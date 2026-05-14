@@ -1,0 +1,14 @@
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+water_test_project\croutine.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stddef.h
+water_test_project\croutine.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdint.h
+water_test_project\croutine.o: ../Core/Inc/FreeRTOSConfig.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/croutine.h
+water_test_project\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

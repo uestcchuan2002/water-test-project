@@ -831,11 +831,12 @@ ARM Macro Assembler    Page 13
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=water_test_project\startup_stm32f407xx.d -owater_test_projec
-t\startup_stm32f407xx.o -I.\RTE\_water_test_project -IC:\app\KEILMDK\ARM\Packs\
-ARM\CMSIS\6.1.0\CMSIS\Core\Include -IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DF
-P\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__MICROLIB SETA
- 1" --predefine="__UVISION_VERSION SETA 540" --predefine="STM32F407xx SETA 1" -
--predefine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
+t\startup_stm32f407xx.o -I../Drivers/CMSIS/Include -I.\RTE\_water_test_project 
+-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include -IC:\app\KEILMDK\
+ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include -
+-predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 540" --prede
+fine="STM32F407xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f407xx
+.lst startup_stm32f407xx.s
 
 
 
