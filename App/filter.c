@@ -1,88 +1,54 @@
 #include "filter.h"
 
-void Median5_Init(Median5_t *f)
+static moving_avg_t adc_mov_avg[ADC_CH_NUM];
+
+/* adc中值滤波算法 */
+static uint16_t adc_median_filter(uint16_t *buf, uint8_t ch)
 {
-    memset(f, 0, sizeof(Median5_t));
-}
+    uint16_t temp[ADC_SAMPLE_GROUPS];
 
-void MovingAvg_Init(MovingAvg_t *f)
-{
-    memset(f, 0, sizeof(MovingAvg_t));
-}
+    for (uint8_t i = 0; i < ADC_SAMPLE_GROUPS; i++)
+    {
+        temp[i] = buf[i * ADC_CH_NUM + ch];
+    }
 
-/* 5点中值滤波：排序网络，比通用排序更适合MCU */
-uint16_t Median5_Update(Median5_t *f, uint16_t in)
-{
-    /* 判断是否需要剔除异常值 */
-    if (f->count > 0) {
-        /* 最近一次的值 */
-        uint16_t base = f->last;
-        /* 计算差值 |in - base| */
-        uint16_t diff = (in > base) ? (in - base) : (base - in);
-
-        /* 如果超过阈值，则异常值计数加1 */
-        if (diff > FILTER_DIFF_MAX) {
-            f->abnormal_count++;
-
-            if (f->abnormal_count < FILTER_ABN_MAX) {
-                return f->last;   // 偶发异常，丢弃
+    for (uint8_t i = 0; i < ADC_SAMPLE_GROUPS - 1; i++)
+    {
+        for (uint8_t j = 0; j < ADC_SAMPLE_GROUPS - 1 - i; j++)
+        {
+            if (temp[j] > temp[j + 1])
+            {
+                uint16_t t = temp[j];
+                temp[j] = temp[j + 1];
+                temp[j + 1] = t;
             }
-
-            f->abnormal_count = 0; // 连续异常，认为可能是真实变化
-        } else {
-            f->abnormal_count = 0;
         }
     }
 
-    f->buf[f->idx] = in;
-    f->idx = (f->idx + 1) % MEDIAN_N;
-    if (f->count < MEDIAN_N) {
-        f->count++;
-    }
-
-    uint16_t tmp[MEDIAN_N];
-    for (uint8_t i = 0; i < f->count; i++) {
-        tmp[i] = f->buf[i];
-    }
-
-    // 插入排序
-    for (uint8_t i = 1; i < f->count; i++) {
-        uint16_t key = tmp[i];
-        int8_t j = i - 1;
-
-        while (j >= 0 && tmp[j] > key) {
-            tmp[j + 1] = tmp[j];
-            j--;
-        }
-
-        tmp[j + 1] = key;
-    }
-
-    f->last = tmp[f->count / 2];
-    return f->last;
+    return (temp[4] + temp[5]) / 2;
 }
 
-/* 整型滑动平均 */
-uint16_t MovingAvg_Update(MovingAvg_t *f, uint16_t in)
+/* 对连续4次中值滤波的数据做滑动平均处理 */
+static uint16_t moving_average_update(moving_avg_t *avg, uint16_t input)
 {
-    if (f->count < AVG_N) {
-        f->count++;
-    } else {
-        f->sum -= f->buf[f->idx];
+    uint32_t sum = 0;
+
+    avg->buf[avg->index] = input;
+    avg->index = (avg->index + 1) % AVG_WIN;
+
+    if (avg->count < AVG_WIN)
+    {
+        avg->count++;
     }
 
-    f->buf[f->idx] = in;
-    f->sum += in;
-    f->idx = (f->idx + 1) % AVG_N;
+    for (uint8_t i = 0; i < avg->count; i++)
+    {
+        sum += avg->buf[i];
+    }
 
-    return (uint16_t)((f->sum + f->count / 2) / f->count);  // 四舍五入
+    return (uint16_t)(sum / avg->count);
 }
 
-/* 组合滤波：先中值，再平均 */
-uint16_t Filter_Update(Median5_t *mf, MovingAvg_t *af, uint16_t raw)
-{
-    uint16_t mid = Median5_Update(mf, raw);
-    return MovingAvg_Update(af, mid);
-}
+
 
 

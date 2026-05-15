@@ -47,8 +47,15 @@ water_test_project\lcd.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RV
 water_test_project\lcd.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 water_test_project\lcd.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 water_test_project\lcd.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
-water_test_project\lcd.o: ..\Bsp\lcdfont.h
+water_test_project\lcd.o: ../App/adcTask.h
+water_test_project\lcd.o: ../Core/Inc/main.h
+water_test_project\lcd.o: ../Core/Inc/adc.h
+water_test_project\lcd.o: ../Core/Inc/tim.h
+water_test_project\lcd.o: ../Bsp/led.h
 water_test_project\lcd.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
+water_test_project\lcd.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
+water_test_project\lcd.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+water_test_project\lcd.o: ..\Bsp\lcdfont.h
 water_test_project\lcd.o: ../Core/Inc/fsmc.h
 water_test_project\lcd.o: ..\Bsp\lcd_ex.c
 water_test_project\lcd.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h

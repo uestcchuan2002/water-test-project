@@ -10,8 +10,8 @@
 #define LCD_H   480
 
 #define UI_BG           WHITE
-#define UI_HEADER       BLUE
-#define UI_CARD_BG      0xF7BE      /* ��ǳ�ĻҰ�ɫ */
+#define UI_HEADER       GRAY
+#define UI_CARD_BG      0xF7BE      /* 很浅的灰白色 */
 #define UI_TEXT         BLACK
 #define UI_TEXT_LIGHT   GRAY
 #define UI_OK           GREEN

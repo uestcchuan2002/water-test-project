@@ -45,3 +45,11 @@ water_test_project\stm32f4xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Sour
 water_test_project\stm32f4xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 water_test_project\stm32f4xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 water_test_project\stm32f4xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+water_test_project\stm32f4xx_hal_msp.o: ../App/adcTask.h
+water_test_project\stm32f4xx_hal_msp.o: ../Core/Inc/main.h
+water_test_project\stm32f4xx_hal_msp.o: ../Core/Inc/adc.h
+water_test_project\stm32f4xx_hal_msp.o: ../Core/Inc/tim.h
+water_test_project\stm32f4xx_hal_msp.o: ../Bsp/led.h
+water_test_project\stm32f4xx_hal_msp.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
+water_test_project\stm32f4xx_hal_msp.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
+water_test_project\stm32f4xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

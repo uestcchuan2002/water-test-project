@@ -27,6 +27,9 @@
 /* USER CODE BEGIN Includes */
 #include "led.h"
 #include "stdio.h"
+#include "adcTask.h"
+#include "adcDataProcTask.h"
+#include "displayTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +65,20 @@ const osThreadAttr_t taskADC_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityHigh,
 };
+/* Definitions for taskAdcDataProc */
+osThreadId_t taskAdcDataProcHandle;
+const osThreadAttr_t taskAdcDataProc_attributes = {
+  .name = "taskAdcDataProc",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal7,
+};
+/* Definitions for taskDisplay */
+osThreadId_t taskDisplayHandle;
+const osThreadAttr_t taskDisplay_attributes = {
+  .name = "taskDisplay",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal6,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -70,6 +87,8 @@ const osThreadAttr_t taskADC_attributes = {
 
 void appTaskLED(void *argument);
 void appTaskADC(void *argument);
+void appTaskAdcDataProc(void *argument);
+void appTaskDisplay(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -106,6 +125,12 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of taskADC */
   taskADCHandle = osThreadNew(appTaskADC, NULL, &taskADC_attributes);
+
+  /* creation of taskAdcDataProc */
+  taskAdcDataProcHandle = osThreadNew(appTaskAdcDataProc, NULL, &taskAdcDataProc_attributes);
+
+  /* creation of taskDisplay */
+  taskDisplayHandle = osThreadNew(appTaskDisplay, NULL, &taskDisplay_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -146,22 +171,37 @@ void appTaskLED(void *argument)
 void appTaskADC(void *argument)
 {
   /* USER CODE BEGIN appTaskADC */
-  xMyAdcTaskHandle = xTaskGetCurrentTaskHandle();
-  uint32_t val = 0, Volt = 0;
-  /* Infinite loop */
-  for (;;)
-  {
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    for (uint8_t i = 0; i < BATCH_DATA_LEN; i++)
-    {
-        val = DataBuffer[i];
-        Volt = (3300 * val) >> 12;
-        printf("ADC_IN%d, val:%d, Volt:%d\r\n", i + 5, val, Volt);
-    }
-    printf("\r\n");
-    LED1_Troggle();
-  }
+    adcTask();
   /* USER CODE END appTaskADC */
+}
+
+/* USER CODE BEGIN Header_appTaskAdcDataProc */
+/**
+* @brief Function implementing the taskAdcDataProc thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_appTaskAdcDataProc */
+void appTaskAdcDataProc(void *argument)
+{
+  /* USER CODE BEGIN appTaskAdcDataProc */
+  addDataPrcoTask();
+  /* USER CODE END appTaskAdcDataProc */
+}
+
+/* USER CODE BEGIN Header_appTaskDisplay */
+/**
+* @brief Function implementing the taskDisplay thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_appTaskDisplay */
+void appTaskDisplay(void *argument)
+{
+  /* USER CODE BEGIN appTaskDisplay */
+  /* Infinite loop */
+  displayTask();
+  /* USER CODE END appTaskDisplay */
 }
 
 /* Private application code --------------------------------------------------*/

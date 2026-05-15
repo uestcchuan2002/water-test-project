@@ -395,19 +395,24 @@
           <GroupName>Application/User/App</GroupName>
           <Files>
             <File>
-              <FileName>filter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\filter.c</FilePath>
-            </File>
-            <File>
               <FileName>adc_ui.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\adc_ui.c</FilePath>
             </File>
             <File>
-              <FileName>adc_ui.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\App\adc_ui.h</FilePath>
+              <FileName>adcTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\adcTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>adcDataProcTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\adcDataProcTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>displayTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\displayTask.c</FilePath>
             </File>
           </Files>
         </Group>

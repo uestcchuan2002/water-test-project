@@ -1,7 +1,9 @@
 --cpu=Cortex-M4.fp.sp
 "water_test_project\startup_stm32f407xx.o"
-"water_test_project\filter.o"
 "water_test_project\adc_ui.o"
+"water_test_project\adctask.o"
+"water_test_project\adcdataproctask.o"
+"water_test_project\displaytask.o"
 "water_test_project\main.o"
 "water_test_project\gpio.o"
 "water_test_project\freertos.o"

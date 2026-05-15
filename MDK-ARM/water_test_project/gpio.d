@@ -46,3 +46,11 @@ water_test_project\gpio.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/R
 water_test_project\gpio.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 water_test_project\gpio.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 water_test_project\gpio.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+water_test_project\gpio.o: ../App/adcTask.h
+water_test_project\gpio.o: ../Core/Inc/main.h
+water_test_project\gpio.o: ../Core/Inc/adc.h
+water_test_project\gpio.o: ../Core/Inc/tim.h
+water_test_project\gpio.o: ../Bsp/led.h
+water_test_project\gpio.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
+water_test_project\gpio.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
+water_test_project\gpio.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

@@ -33,12 +33,13 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "FreeRTOS.h"
 #include "task.h"
+
+#include "adcTask.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-#define BATCH_DATA_LEN 4
-extern uint32_t DataBuffer[BATCH_DATA_LEN];
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -67,7 +68,7 @@ void Error_Handler(void);
 #define LCD_BL_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-extern TaskHandle_t xMyAdcTaskHandle;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

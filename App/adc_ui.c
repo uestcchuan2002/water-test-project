@@ -14,20 +14,20 @@ void ui_draw_static(void)
 {
     lcd_clear(UI_BG);
 
-    /* ¶¥²¿±êÌâÀ¸ */
-    lcd_fill(0, 0, LCD_W - 1, 55, UI_HEADER);
-    lcd_show_string(38, 16, 260, 24, 24, "Water Monitor", BLUE);
+    /* é¡¶éƒ¨æ ‡é¢˜æ  */
+    lcd_fill(0, 0, LCD_W - 1, 55, UI_CARD_BG);
+    lcd_show_string(38, 16, 260, 24, 32, "Water Monitor", BLUE);
 
-    /* Ò³Ãæ±êÌâ */
+    /* é¡µé¢æ ‡é¢˜ */
     lcd_show_string(20, 70, 260, 24, 16, "Industrial Water Quality", UI_TEXT);
 
-    /* ²ÎÊý¿¨Æ¬±³¾° */
+    /* å‚æ•°å¡ç‰‡èƒŒæ™¯ */
     ui_draw_card(16, 110, 288, 70, "pH", "--", UI_TEXT);
     ui_draw_card(16, 190, 288, 70, "Temp", "--", UI_TEXT);
     ui_draw_card(16, 270, 288, 70, "Turbidity", "--", UI_TEXT);
     ui_draw_card(16, 350, 288, 70, "Conductivity", "--", UI_TEXT);
 
-    /* µ×²¿×´Ì¬À¸ */
+    /* åº•éƒ¨çŠ¶æ€æ  */
     lcd_fill(0, LCD_H - 44, LCD_W - 1, LCD_H - 1, LGRAY);
     lcd_show_string(16, LCD_H - 30, 140, 24, 24, "Status:", UI_TEXT);
 }
@@ -48,7 +48,7 @@ void ui_update_data(ui_water_data_t *data)
     sprintf(buf, "%.0f uS/cm", data->conductivity);
     ui_draw_card(16, 350, 288, 70, "Conductivity", buf, UI_TEXT);
 
-    /* Ë¢ÐÂµ×²¿×´Ì¬À¸ */
+    /* åˆ·æ–°åº•éƒ¨çŠ¶æ€æ  */
     lcd_fill(0, LCD_H - 44, LCD_W - 1, LCD_H - 1, LGRAY);
 
     if (data->alarm)

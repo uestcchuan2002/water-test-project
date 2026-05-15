@@ -46,3 +46,11 @@ water_test_project\adc.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RV
 water_test_project\adc.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 water_test_project\adc.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 water_test_project\adc.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+water_test_project\adc.o: ../App/adcTask.h
+water_test_project\adc.o: ../Core/Inc/main.h
+water_test_project\adc.o: ../Core/Inc/adc.h
+water_test_project\adc.o: ../Core/Inc/tim.h
+water_test_project\adc.o: ../Bsp/led.h
+water_test_project\adc.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
+water_test_project\adc.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
+water_test_project\adc.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

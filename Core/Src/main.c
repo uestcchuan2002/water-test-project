@@ -38,7 +38,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-uint32_t DataBuffer[BATCH_DATA_LEN];
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -54,7 +54,7 @@ uint32_t DataBuffer[BATCH_DATA_LEN];
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-TaskHandle_t xMyAdcTaskHandle = NULL;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -108,39 +108,27 @@ int main(void)
   MX_ADC1_Init();
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
-    printf("hello stm32\r\n");
-    printf("value = %d\r\n", 123);
-	lcd_init();
+  printf("hello stm32\r\n");
+  printf("value = %d\r\n", 123);
+  lcd_init();
 
-	ui_water_data_t ui_data;
+  ui_water_data_t ui_data;
 
-    ui_draw_static();
+  ui_draw_static();
 
-    
-        /* 实际项目中这里可以从 Queue 里接收传感器处理后的数据 */
-        ui_data.ph = 7.21f;
-        ui_data.temp = 25.6f;
-        ui_data.turbidity = 12.0f;
-        ui_data.conductivity = 865.0f;
-        ui_data.rs485_ok = 1;
-        ui_data.alarm = 0;
+  /* 实际项目中这里可以从 Queue 里接收传感器处理后的数据 */
+  ui_data.ph = 7.21f;
+  ui_data.temp = 25.6f;
+  ui_data.turbidity = 12.0f;
+  ui_data.conductivity = 865.0f;
+  ui_data.rs485_ok = 1;
+  ui_data.alarm = 0;
 
-        ui_update_data(&ui_data);
+  ui_update_data(&ui_data);
 
-        
-    
-    /* 中值滑动滤波算法测试 */
-    Median5_t m_median5;
-    MovingAvg_t m_movingavg;
-    Median5_Init(&m_median5);
-    MovingAvg_Init(&m_movingavg);
-	
-	/* 以中断的方式启动ADC转换 */
-/* 	HAL_ADC_Start_IT(&hadc1);
-    HAL_TIM_Base_Start(&htim3); */
-    /* 以DMA的方式启动ADC转换 */
-	HAL_ADC_Start_DMA(&hadc1, DataBuffer, BATCH_DATA_LEN);
-	HAL_TIM_Base_Start(&htim3);
+  
+
+ 
   /* USER CODE END 2 */
 
   /* Init scheduler */
