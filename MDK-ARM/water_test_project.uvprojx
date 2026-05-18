@@ -780,6 +780,11 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>sys.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\Inc\sys.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1383,6 +1388,16 @@
               <FileName>lcd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Bsp\lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>myiic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\myiic.c</FilePath>
+            </File>
+            <File>
+              <FileName>24cxx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\24cxx.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -41,6 +41,8 @@
 "water_test_project\system_stm32f4xx.o"
 "water_test_project\led.o"
 "water_test_project\lcd.o"
+"water_test_project\myiic.o"
+"water_test_project\24cxx.o"
 "water_test_project\croutine.o"
 "water_test_project\event_groups.o"
 "water_test_project\list.o"

@@ -1,4 +1,10 @@
 #include "displayTask.h"
+#include "24cxx.h"
+#include "led.h"
+
+const uint8_t TEXT_Buffer[]={"stm32 study of at24c02.."};
+#define SIZE sizeof(TEXT_Buffer)
+uint8_t datatemp[SIZE];	 
 
 void displayTask(void)
 {
@@ -7,6 +13,18 @@ void displayTask(void)
 
     lcd_init();
     ui_draw_static();
+
+    lcd_init();
+  AT24CXX_Init();	
+  lcd_show_string(30,50,200,16,16,"Apollo STM32F4/F7", BLUE);
+  while(AT24CXX_Check())//检测不到24c02
+  {
+    LED0_Troggle();
+  }
+  // AT24CXX_Write(0,(uint8_t*)TEXT_Buffer,SIZE);
+ 
+  AT24CXX_Read(0,datatemp,SIZE);
+  printf("read: %s\r\n", datatemp);
 
     while (1)
     {

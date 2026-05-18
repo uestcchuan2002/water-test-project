@@ -63,3 +63,6 @@ water_test_project\main.o: ../App/filter.h
 water_test_project\main.o: ../Bsp/lcd.h
 water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
 water_test_project\main.o: ../App/adc_ui.h
+water_test_project\main.o: ../Bsp/24cxx.h
+water_test_project\main.o: ../Bsp/myiic.h
+water_test_project\main.o: ../Core/Inc/sys.h

@@ -34,6 +34,7 @@
 #include "task.h"
 #include "lcd.h"
 #include "adc_ui.h"
+#include "24cxx.h"  
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,6 +72,9 @@ int fputc(int ch, FILE *f)
     HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
     return ch;
 }
+
+
+
 /* USER CODE END 0 */
 
 /**
@@ -108,13 +112,7 @@ int main(void)
   MX_ADC1_Init();
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
-  printf("hello stm32\r\n");
-  printf("value = %d\r\n", 123);
   
-
-  
-
- 
   /* USER CODE END 2 */
 
   /* Init scheduler */

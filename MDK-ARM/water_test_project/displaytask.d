@@ -59,3 +59,8 @@ water_test_project\displaytask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\math.h
 water_test_project\displaytask.o: ../Bsp/lcd.h
 water_test_project\displaytask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
 water_test_project\displaytask.o: ..\App\adc_ui.h
+water_test_project\displaytask.o: ../Bsp/24cxx.h
+water_test_project\displaytask.o: ../Bsp/myiic.h
+water_test_project\displaytask.o: ../Core/Inc/sys.h
+water_test_project\displaytask.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+water_test_project\displaytask.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
