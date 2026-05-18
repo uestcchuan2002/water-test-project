@@ -54,3 +54,4 @@ water_test_project\adcdataproctask.o: ../Bsp/led.h
 water_test_project\adcdataproctask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
 water_test_project\adcdataproctask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
 water_test_project\adcdataproctask.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+water_test_project\adcdataproctask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\math.h

@@ -185,7 +185,7 @@ void appTaskADC(void *argument)
 void appTaskAdcDataProc(void *argument)
 {
   /* USER CODE BEGIN appTaskAdcDataProc */
-  addDataPrcoTask();
+  adcDataPrcoTask();
   /* USER CODE END appTaskAdcDataProc */
 }
 

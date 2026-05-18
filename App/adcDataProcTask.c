@@ -12,8 +12,10 @@ static float calc_ph(float v_ph, float temperature);
 static float calc_turbidity(float v);
 static float calc_conductivity(float v, float temperature);
 
-
-void addDataPrcoTask(void)
+/**
+ * adc采集数据处理函数
+ */
+void adcDataPrcoTask(void)
 {
     adc_raw_frame_t raw_frame;
     sensor_data_t sensor_data;
@@ -48,6 +50,9 @@ void addDataPrcoTask(void)
     }
 }
 
+/**
+ * 中值滤波
+ */
 static uint16_t adc_median_filter(uint16_t *buf, uint8_t ch)
 {
     uint16_t temp[ADC_SAMPLE_GROUPS];
@@ -73,6 +78,9 @@ static uint16_t adc_median_filter(uint16_t *buf, uint8_t ch)
     return (temp[4] + temp[5]) / 2;
 }
 
+/**
+ * 滑动平均滤波
+ */
 static uint16_t moving_average_update(moving_avg_t *avg, uint16_t input)
 {
     uint32_t sum = 0;
@@ -98,27 +106,68 @@ static float adc_to_voltage(uint16_t adc)
     return ((float)adc * 3.3f) / 4095.0f;
 }
 
+
 static float calc_temperature(float v)
 {
-    /* TODO: 根据NTC/PT100/温度芯片公式换算 */
-    return v;
+    const float Vref = 3.3f;
+    const float Rfixed = 10000.0f;
+    const float R0 = 10000.0f;
+    const float T0 = 298.15f;
+    const float B = 3950.0f;
+
+    float Vadc = v;
+
+    if (Vadc <= 0.001f) {
+        Vadc = 0.001f;
+    } else if (Vadc >= Vref - 0.001f) {
+        Vadc = Vref - 0.001f;
+    }
+
+    // Vref --- 固定电阻 --- ADC --- NTC --- GND
+    float Rntc = Rfixed * Vadc / (Vref - Vadc);
+
+    float T = 1.0f / (1.0f / T0 + logf(Rntc / R0) / B);
+
+    return T - 273.15f;
 }
 
 static float calc_ph(float v_ph, float temperature)
 {
-    /* TODO: 根据pH标定斜率、截距和温度补偿换算 */
-    return v_ph;
+    float temp_k = temperature + 273.15f;
+    float slope_t = PH_SLOPE_25C * temp_k / 298.15f;
+
+    float ph = slope_t * v_ph + PH_OFFSET;
+
+    if (ph < 0.0f) {
+        ph = 0.0f;
+    } else if (ph > 14.0f) {
+        ph = 14.0f;
+    }
+
+    return ph;
 }
 
 static float calc_turbidity(float v)
 {
-    /* TODO: 根据浊度传感器曲线换算 */
-    return v;
+    float ntu = TURB_A * v * v + TURB_B * v + TURB_C;
+
+    if (ntu < 0.0f) {
+        ntu = 0.0f;
+    }
+
+    return ntu;
 }
 
 static float calc_conductivity(float v, float temperature)
 {
-    /* TODO: 根据电导率传感器K值和温度补偿换算 */
-    return v;
+    float ec_raw = EC_CAL_GAIN * v + EC_CAL_OFFSET;
+
+    float ec25 = ec_raw / (1.0f + EC_ALPHA * (temperature - 25.0f));
+
+    if (ec25 < 0.0f) {
+        ec25 = 0.0f;
+    }
+
+    return ec25;
 }
 

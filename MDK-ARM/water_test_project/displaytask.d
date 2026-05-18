@@ -55,3 +55,7 @@ water_test_project\displaytask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.
 water_test_project\displaytask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
 water_test_project\displaytask.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 water_test_project\displaytask.o: ..\App\adcDataProcTask.h
+water_test_project\displaytask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\math.h
+water_test_project\displaytask.o: ../Bsp/lcd.h
+water_test_project\displaytask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
+water_test_project\displaytask.o: ..\App\adc_ui.h

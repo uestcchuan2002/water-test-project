@@ -6,6 +6,8 @@
 #include "queue.h"
 #include "adcDataProcTask.h"
 #include "adcTask.h"
+#include "lcd.h"
+#include "adc_ui.h"
 
 void displayTask(void);
 

@@ -56,4 +56,8 @@ water_test_project\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/includ
 water_test_project\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 water_test_project\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 water_test_project\freertos.o: ../App/adcDataProcTask.h
+water_test_project\freertos.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\math.h
 water_test_project\freertos.o: ../App/displayTask.h
+water_test_project\freertos.o: ../Bsp/lcd.h
+water_test_project\freertos.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
+water_test_project\freertos.o: ../App/adc_ui.h
