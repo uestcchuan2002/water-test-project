@@ -8,6 +8,10 @@
 #include "adcTask.h"
 #include "lcd.h"
 #include "adc_ui.h"
+#include "24cxx.h"
+#include "led.h"
+#include "screenTxTask.h"
+
 
 void displayTask(void);
 

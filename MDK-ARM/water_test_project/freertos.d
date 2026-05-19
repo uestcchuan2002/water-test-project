@@ -61,3 +61,10 @@ water_test_project\freertos.o: ../App/displayTask.h
 water_test_project\freertos.o: ../Bsp/lcd.h
 water_test_project\freertos.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
 water_test_project\freertos.o: ../App/adc_ui.h
+water_test_project\freertos.o: ../Bsp/24cxx.h
+water_test_project\freertos.o: ../Bsp/myiic.h
+water_test_project\freertos.o: ../Core/Inc/sys.h
+water_test_project\freertos.o: ../App/screenTxTask.h
+water_test_project\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+water_test_project\freertos.o: ../Core/Inc/usart.h
+water_test_project\freertos.o: ../App/screenRxTask.h

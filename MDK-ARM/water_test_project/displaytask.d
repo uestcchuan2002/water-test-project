@@ -64,3 +64,6 @@ water_test_project\displaytask.o: ../Bsp/myiic.h
 water_test_project\displaytask.o: ../Core/Inc/sys.h
 water_test_project\displaytask.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 water_test_project\displaytask.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+water_test_project\displaytask.o: ..\App\screenTxTask.h
+water_test_project\displaytask.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+water_test_project\displaytask.o: ../Core/Inc/usart.h

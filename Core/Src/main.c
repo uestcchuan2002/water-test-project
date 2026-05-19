@@ -35,6 +35,10 @@
 #include "lcd.h"
 #include "adc_ui.h"
 #include "24cxx.h"  
+#include "queue.h"
+#include "semphr.h"
+#include "screenTxTask.h"
+#include "screenRxTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -111,6 +115,7 @@ int main(void)
   MX_TIM3_Init();
   MX_ADC1_Init();
   MX_FSMC_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   
   /* USER CODE END 2 */
@@ -186,7 +191,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    // 👇 只处理 ADC1（你用哪个就写哪个）
     if(hadc->Instance == ADC1)  
     {
         vTaskNotifyGiveFromISR(xMyAdcTaskHandle, &xHigherPriorityTaskWoken);
@@ -194,6 +198,52 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
     }
 }
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    if (huart->Instance == USART3)
+    {
+        
+        xSemaphoreGiveFromISR(screenTxDoneSem, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    if (huart->Instance == USART3)
+    {
+        ScreenRxMsg_t msg;
+
+        /*限制最大的接收长度，防止溢出报错*/
+        if (Size > SCREEN_RX_DMA_SIZE)
+        {
+            Size = SCREEN_RX_DMA_SIZE;
+        }
+
+        /*复制缓存区的数据到msg结构体*/
+        memcpy(msg.data, screenRxDmaBuf, Size);
+        msg.len = Size;
+
+        /*发给接收队列*/
+        xQueueSendFromISR(screenRxQueue,
+                          &msg,
+                          &xHigherPriorityTaskWoken);
+        
+        /*重新启动下一次 DMA + IDLE 接收*/
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart3,
+                                     screenRxDmaBuf,
+                                     SCREEN_RX_DMA_SIZE);
+
+        __HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
+        
+        /*切换中断上下文*/
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    }
+}
 /* USER CODE END 4 */
 
 /**

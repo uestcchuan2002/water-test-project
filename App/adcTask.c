@@ -28,7 +28,7 @@ void adcTask(void)
         frame.tick = xTaskGetTickCount();
 
         xQueueSend(adcRawQueue, &frame, pdMS_TO_TICKS(10));
-        LED1_Troggle();
+        //LED1_Troggle();
     }
 }
 

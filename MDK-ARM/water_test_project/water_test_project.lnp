@@ -4,6 +4,8 @@
 "water_test_project\adctask.o"
 "water_test_project\adcdataproctask.o"
 "water_test_project\displaytask.o"
+"water_test_project\screentxtask.o"
+"water_test_project\screenrxtask.o"
 "water_test_project\main.o"
 "water_test_project\gpio.o"
 "water_test_project\freertos.o"

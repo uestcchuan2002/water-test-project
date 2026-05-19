@@ -414,11 +414,31 @@
               <FileType>1</FileType>
               <FilePath>..\App\displayTask.c</FilePath>
             </File>
+            <File>
+              <FileName>screenTxTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\screenTxTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>screenRxTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\screenRxTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>screenRxTask.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\screenRxTask.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Application/User/Core</GroupName>
           <Files>
+            <File>
+              <FileName>sys.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\Inc\sys.h</FilePath>
+            </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
@@ -779,11 +799,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>sys.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\Inc\sys.h</FilePath>
             </File>
           </Files>
         </Group>

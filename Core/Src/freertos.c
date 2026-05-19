@@ -30,6 +30,7 @@
 #include "adcTask.h"
 #include "adcDataProcTask.h"
 #include "displayTask.h"
+#include "screenRxTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -133,7 +134,8 @@ void MX_FREERTOS_Init(void) {
   taskDisplayHandle = osThreadNew(appTaskDisplay, NULL, &taskDisplay_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+    ScreenTx_Init();
+    ScreenRx_Init();
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -155,7 +157,6 @@ void appTaskLED(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    LED0_Troggle();
     osDelay(500);
   }
   /* USER CODE END appTaskLED */

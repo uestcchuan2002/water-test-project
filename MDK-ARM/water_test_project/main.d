@@ -66,3 +66,6 @@ water_test_project\main.o: ../App/adc_ui.h
 water_test_project\main.o: ../Bsp/24cxx.h
 water_test_project\main.o: ../Bsp/myiic.h
 water_test_project\main.o: ../Core/Inc/sys.h
+water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
+water_test_project\main.o: ../App/screenTxTask.h
+water_test_project\main.o: ../App/screenRxTask.h
