@@ -59,7 +59,6 @@ water_test_project\main.o: ../Core/Inc/dma.h
 water_test_project\main.o: ../Core/Inc/usart.h
 water_test_project\main.o: ../Core/Inc/gpio.h
 water_test_project\main.o: ../Core/Inc/fsmc.h
-water_test_project\main.o: ../App/filter.h
 water_test_project\main.o: ../Bsp/lcd.h
 water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
 water_test_project\main.o: ../App/adc_ui.h
@@ -69,3 +68,7 @@ water_test_project\main.o: ../Core/Inc/sys.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 water_test_project\main.o: ../App/screenTxTask.h
 water_test_project\main.o: ../App/screenRxTask.h
+water_test_project\main.o: ../App/displayTask.h
+water_test_project\main.o: ../App/adcDataProcTask.h
+water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\math.h
+water_test_project\main.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\limits.h

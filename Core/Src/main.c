@@ -29,7 +29,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
-#include "filter.h"
 #include "led.h"
 #include "task.h"
 #include "lcd.h"

@@ -12,7 +12,16 @@
 #include "led.h"
 #include "screenTxTask.h"
 
-
 void displayTask(void);
+
+typedef enum
+{
+    RS485_PARA_PAGE,
+    ADC_PARA_PAGE,
+    PH_CAL_PAGE,
+    EC_CAL_PAGE
+} ScreenPage;
+
+extern volatile ScreenPage currentPage;
 
 #endif

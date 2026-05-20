@@ -3,30 +3,18 @@
 const char *textStrings[] = {
     "rs485_para",
     "adc_para",
-    "ph_cal"
-};
+    "ph_cal",
+    "ec_cal"};
 
-typedef enum {
-    RS485_PARA_PAGE,
-    ADC_PARA_PAGE,
-    PH_CAL
-} ScreenPage;
 
-static void Screen_SetText(ScreenPage page, const char *obj, const char *text);
-static void Screen_SetText(ScreenPage page, const char *obj, const char *text);
 static void Screen_SetTextFloat(ScreenPage page, const char *obj, float value, uint8_t decimals);
 
-
-const uint8_t TEXT_Buffer[] = {"stm32 study of at24c02.."};
-#define SIZE sizeof(TEXT_Buffer)
-uint8_t datatemp[SIZE];
-char cmd[64];
-
+volatile ScreenPage currentPage = RS485_PARA_PAGE;
 
 void displayTask(void)
 {
     sensor_data_t recv_data;
-    ui_water_data_t ui_data;
+    // ui_water_data_t ui_data;
     float ph_test = 1.00;
 
     lcd_init();
@@ -34,52 +22,60 @@ void displayTask(void)
 
     lcd_init();
     AT24CXX_Init();
-    
-    while (AT24CXX_Check()) // 检测不到24c02
-    {
+
+    while (AT24CXX_Check()) {
+        // 检测不到24c02
         LED0_Troggle();
     }
-    // AT24CXX_Write(0,(uint8_t*)TEXT_Buffer,SIZE);
 
-    AT24CXX_Read(0, datatemp, SIZE);
-    printf("read: %s\r\n", datatemp);
+    // 从EEPROM中读取校准参数
+    osDelay(500);
+    AT24CXX_Read(0, (uint8_t *)&calibration_para, sizeof(calibration_para_t));
+    // 打印所有校准参数
+    printf("===== Calibration Para =====\r\n");
+    printf("PH_CAL_TEMP_C   : %.2f\r\n", calibration_para.PH_CAL_TEMP_C);
+    printf("PH_SLOPE_25C    : %.2f\r\n", calibration_para.PH_SLOPE_25C);
+    printf("PH_OFFSET       : %.2f\r\n", calibration_para.PH_OFFSET);
+    printf("TURB_A          : %.2f\r\n", calibration_para.TURB_A);
+    printf("TURB_B          : %.2f\r\n", calibration_para.TURB_B);
+    printf("TURB_C          : %.2f\r\n", calibration_para.TURB_C);
+    printf("EC_ALPHA        : %.2f\r\n", calibration_para.EC_ALPHA);
+    printf("EC_CAL_GAIN     : %.2f\r\n", calibration_para.EC_CAL_GAIN);
+    printf("EC_CAL_OFFSET   : %.2f\r\n", calibration_para.EC_CAL_OFFSET);
+    printf("EC_K_CELL       : %.2f\r\n", calibration_para.EC_K_CELL);
+    printf("======================================\r\n");
 
     while (1)
     {
         if (xQueueReceive(sensorDataQueue, &recv_data, portMAX_DELAY) == pdPASS)
         {
             ph_test += 0.01f;
-            if (ph_test > 14.0f) {
+            if (ph_test > 14.0f)
+            {
                 ph_test = 0.0f;
             }
-            // Screen_SetTextFloat(RS485_PARA_PAGE, "ph", ph_test, 2);
-
-            ui_data.ph = recv_data.ph;
-            ui_data.temp = recv_data.temperature;
-            ui_data.turbidity = recv_data.turbidity;
-            ui_data.conductivity = recv_data.conductivity;
-            ui_data.rs485_ok = 1;
-            ui_data.alarm = 0;
-
-            ui_update_data(&ui_data);
+            
+            switch (currentPage)
+            {
+                case RS485_PARA_PAGE:
+                {
+                    
+                }
+                break;
+                case ADC_PARA_PAGE:
+                {
+                    Screen_SetTextFloat(ADC_PARA_PAGE, "ph", recv_data.ph, 2);
+                    osDelay(100);
+                    Screen_SetTextFloat(ADC_PARA_PAGE, "temp", recv_data.temperature, 2);
+                    osDelay(100);
+                    Screen_SetTextFloat(ADC_PARA_PAGE, "tur", recv_data.turbidity, 2);
+                    osDelay(100);
+                    Screen_SetTextFloat(ADC_PARA_PAGE, "cond", recv_data.conductivity, 2);
+                }   
+                break;
+            }            
         }
     }
-}
-
-static void Screen_SetText(ScreenPage page, const char *obj, const char *text)
-{
-    char cmd[128];
-
-    snprintf(cmd, sizeof(cmd), "%s.%s.txt=\"%s\"", textStrings[page],  obj, text);
-    Screen_SendCmd(cmd);
-}
-
-static void Screen_SetTextInt(ScreenPage page, const char *obj, int value)
-{
-    char cmd[128];
-
-    snprintf(cmd, sizeof(cmd), "%s.%s.txt=\"%d\"", textStrings[page], obj, value);
-    Screen_SendCmd(cmd);
 }
 
 static void Screen_SetTextFloat(ScreenPage page, const char *obj, float value, uint8_t decimals)
@@ -95,5 +91,3 @@ static void Screen_SetTextFloat(ScreenPage page, const char *obj, float value, u
 
     Screen_SendCmd(cmd);
 }
-
-

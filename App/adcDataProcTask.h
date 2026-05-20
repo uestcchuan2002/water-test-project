@@ -9,18 +9,36 @@
 
 #define MOV_AVG_WIN 4
 
-#define PH_CAL_TEMP_C      25.0f      // pH校准基准温度(摄氏度)
-#define PH_SLOPE_25C      (-5.70f)    // 25℃下pH电压斜率，单位：pH/伏，示例数值，需实际标定
-#define PH_OFFSET         21.34f      // pH电压偏移量，示例数值，需实际标定
+// #define PH_CAL_TEMP_C      25.0f      // pH校准基准温度(摄氏度)
+// #define PH_SLOPE_25C      (-5.70f)    // 25℃下pH电压斜率，单位：pH/伏，示例数值，需实际标定
+// #define PH_OFFSET         21.34f      // pH电压偏移量，示例数值，需实际标定
 
-#define TURB_A            (-1120.4f) // 示例曲线参数
-#define TURB_B            (5742.3f)
-#define TURB_C            (-4352.9f)
+// #define TURB_A            (-1120.4f) // 示例曲线参数
+// #define TURB_B            (5742.3f)
+// #define TURB_C            (-4352.9f)
 
-#define EC_K_CELL         1.0f       // 电极常数 K，cm^-1
-#define EC_ALPHA          0.02f      // 温度补偿系数，约 2%/°C
-#define EC_CAL_GAIN       1.0f       // 电导率标定增益
-#define EC_CAL_OFFSET     0.0f       // 电导率标定偏移
+// #define EC_K_CELL         1.0f       // 电极常数 K，cm^-1
+// #define EC_ALPHA          0.02f      // 温度补偿系数，约 2%/°C
+// #define EC_CAL_GAIN       1.0f       // 电导率标定增益
+// #define EC_CAL_OFFSET     0.0f       // 电导率标定偏移
+
+/**
+ * adc传感器校准系数...
+ */
+typedef struct 
+{
+    float PH_CAL_TEMP_C;        // pH校准基准温度(摄氏度)
+    float PH_SLOPE_25C;         // 25℃下pH电压斜率，单位：pH/伏
+    float PH_OFFSET;            // pH电压偏移量
+    float TURB_A;               // 三点校准值A
+    float TURB_B;               // 三点校准值B
+    float TURB_C;               // 三点校准值C
+    float EC_K_CELL;            // 电极常数 K，cm^-1
+    float EC_ALPHA;             // 温度补偿系数，约 2%/°C
+    float EC_CAL_GAIN;          // 电导率标定增益
+    float EC_CAL_OFFSET;        // 电导率标定偏移
+} calibration_para_t;
+
 
 typedef struct
 {
@@ -30,6 +48,7 @@ typedef struct
 } moving_avg_t;
 
 extern QueueHandle_t sensorDataQueue;
+extern calibration_para_t calibration_para;
 
 void adcDataPrcoTask(void);
 

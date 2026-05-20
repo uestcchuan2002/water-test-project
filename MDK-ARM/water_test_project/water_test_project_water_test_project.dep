@@ -111,8 +111,8 @@ I (../Bsp/led.h)(0x6A054244)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69EECD80)
-F (..\App\adcDataProcTask.c)(0x6A0A7DEE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\adcdataproctask.o --omf_browse water_test_project\adcdataproctask.crf --depend water_test_project\adcdataproctask.d)
-I (..\App\adcDataProcTask.h)(0x6A0C30B8)
+F (..\App\adcDataProcTask.c)(0x6A0D74BE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\adcdataproctask.o --omf_browse water_test_project\adcdataproctask.crf --depend water_test_project\adcdataproctask.d)
+I (..\App\adcDataProcTask.h)(0x6A0D5C17)
 I (../Core/Inc/main.h)(0x6A06E579)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x69EECDBF)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A05BE8C)
@@ -166,8 +166,8 @@ I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69EECD80)
 I (C:\app\KEILMDK\ARM\ARMCC\include\math.h)(0x5D9B3482)
-F (..\App\displayTask.c)(0x6A0C409D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\displaytask.o --omf_browse water_test_project\displaytask.crf --depend water_test_project\displaytask.d)
-I (..\App\displayTask.h)(0x6A0C0A40)
+F (..\App\displayTask.c)(0x6A0D73EE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\displaytask.o --omf_browse water_test_project\displaytask.crf --depend water_test_project\displaytask.d)
+I (..\App\displayTask.h)(0x6A0D714B)
 I (../Core/Inc/main.h)(0x6A06E579)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x69EECDBF)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A05BE8C)
@@ -220,20 +220,20 @@ I (../Bsp/led.h)(0x6A054244)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69EECD80)
-I (..\App\adcDataProcTask.h)(0x6A0C30B8)
+I (..\App\adcDataProcTask.h)(0x6A0D5C17)
 I (C:\app\KEILMDK\ARM\ARMCC\include\math.h)(0x5D9B3482)
 I (../Bsp/lcd.h)(0x6A05BE8C)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdlib.h)(0x5D9B348A)
 I (..\App\adc_ui.h)(0x6A05C120)
 I (../Bsp/24cxx.h)(0x6A0ADD70)
 I (../Bsp/myiic.h)(0x6A0ADCED)
-I (../Core/Inc/sys.h)(0x6A0AD922)
+I (../Core/Inc/sys.h)(0x6A0D867A)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x69EECD80)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x69EECD80)
 I (..\App\screenTxTask.h)(0x6A0C0960)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x69EECD80)
 I (../Core/Inc/usart.h)(0x6A0BD730)
-F (..\App\screenTxTask.c)(0x6A0C1318)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\screentxtask.o --omf_browse water_test_project\screentxtask.crf --depend water_test_project\screentxtask.d)
+F (..\App\screenTxTask.c)(0x6A0D73CC)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\screentxtask.o --omf_browse water_test_project\screentxtask.crf --depend water_test_project\screentxtask.d)
 I (..\App\screenTxTask.h)(0x6A0C0960)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x69EECD80)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stddef.h)(0x5D9B3488)
@@ -289,8 +289,8 @@ I (../Core/Inc/tim.h)(0x6A046CEA)
 I (../Bsp/led.h)(0x6A054244)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
-F (..\App\screenRxTask.c)(0x6A0C3B77)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\screenrxtask.o --omf_browse water_test_project\screenrxtask.crf --depend water_test_project\screenrxtask.d)
-I (..\App\screenRxTask.h)(0x6A0C3672)
+F (..\App\screenRxTask.c)(0x6A0D8CA4)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\screenrxtask.o --omf_browse water_test_project\screenrxtask.crf --depend water_test_project\screenrxtask.d)
+I (..\App\screenRxTask.h)(0x6A0D8B21)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x69EECD80)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stddef.h)(0x5D9B3488)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdint.h)(0x69BCC093)
@@ -345,9 +345,22 @@ I (../Core/Inc/tim.h)(0x6A046CEA)
 I (../Bsp/led.h)(0x6A054244)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
-F (..\App\screenRxTask.h)(0x6A0C3672)()
-F (..\Core\Inc\sys.h)(0x6A0AD922)()
-F (../Core/Src/main.c)(0x6A0C34E5)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\main.o --omf_browse water_test_project\main.crf --depend water_test_project\main.d)
+I (..\App\displayTask.h)(0x6A0D714B)
+I (..\App\adcDataProcTask.h)(0x6A0D5C17)
+I (C:\app\KEILMDK\ARM\ARMCC\include\math.h)(0x5D9B3482)
+I (../Bsp/lcd.h)(0x6A05BE8C)
+I (C:\app\KEILMDK\ARM\ARMCC\include\stdlib.h)(0x5D9B348A)
+I (..\App\adc_ui.h)(0x6A05C120)
+I (../Bsp/24cxx.h)(0x6A0ADD70)
+I (../Bsp/myiic.h)(0x6A0ADCED)
+I (../Core/Inc/sys.h)(0x6A0D867A)
+I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x69EECD80)
+I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x69EECD80)
+I (..\App\screenTxTask.h)(0x6A0C0960)
+I (C:\app\KEILMDK\ARM\ARMCC\include\limits.h)(0x5D9B3482)
+F (..\App\screenRxTask.h)(0x6A0D8B21)()
+F (..\Core\Inc\sys.h)(0x6A0D867A)()
+F (../Core/Src/main.c)(0x6A0D7560)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\main.o --omf_browse water_test_project\main.crf --depend water_test_project\main.d)
 I (../Core/Inc/main.h)(0x6A06E579)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x69EECDBF)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A05BE8C)
@@ -406,16 +419,19 @@ I (../Core/Inc/dma.h)(0x6A0587B6)
 I (../Core/Inc/usart.h)(0x6A0BD730)
 I (../Core/Inc/gpio.h)(0x6A03F188)
 I (../Core/Inc/fsmc.h)(0x6A05BE8C)
-I (../App/filter.h)(0x6A06D424)
 I (../Bsp/lcd.h)(0x6A05BE8C)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdlib.h)(0x5D9B348A)
 I (../App/adc_ui.h)(0x6A05C120)
 I (../Bsp/24cxx.h)(0x6A0ADD70)
 I (../Bsp/myiic.h)(0x6A0ADCED)
-I (../Core/Inc/sys.h)(0x6A0AD922)
+I (../Core/Inc/sys.h)(0x6A0D867A)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x69EECD80)
 I (../App/screenTxTask.h)(0x6A0C0960)
-I (../App/screenRxTask.h)(0x6A0C3672)
+I (../App/screenRxTask.h)(0x6A0D8B21)
+I (../App/displayTask.h)(0x6A0D714B)
+I (../App/adcDataProcTask.h)(0x6A0D5C17)
+I (C:\app\KEILMDK\ARM\ARMCC\include\math.h)(0x5D9B3482)
+I (C:\app\KEILMDK\ARM\ARMCC\include\limits.h)(0x5D9B3482)
 F (../Core/Src/gpio.c)(0x6A06CA4A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\gpio.o --omf_browse water_test_project\gpio.crf --depend water_test_project\gpio.d)
 I (../Core/Inc/gpio.h)(0x6A03F188)
 I (../Core/Inc/main.h)(0x6A06E579)
@@ -525,19 +541,20 @@ I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69EECD80)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x69EECD80)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x69EECD80)
-I (../App/adcDataProcTask.h)(0x6A0C30B8)
+I (../App/adcDataProcTask.h)(0x6A0D5C17)
 I (C:\app\KEILMDK\ARM\ARMCC\include\math.h)(0x5D9B3482)
-I (../App/displayTask.h)(0x6A0C0A40)
+I (../App/displayTask.h)(0x6A0D714B)
 I (../Bsp/lcd.h)(0x6A05BE8C)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdlib.h)(0x5D9B348A)
 I (../App/adc_ui.h)(0x6A05C120)
 I (../Bsp/24cxx.h)(0x6A0ADD70)
 I (../Bsp/myiic.h)(0x6A0ADCED)
-I (../Core/Inc/sys.h)(0x6A0AD922)
+I (../Core/Inc/sys.h)(0x6A0D867A)
 I (../App/screenTxTask.h)(0x6A0C0960)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x69EECD80)
 I (../Core/Inc/usart.h)(0x6A0BD730)
-I (../App/screenRxTask.h)(0x6A0C3672)
+I (../App/screenRxTask.h)(0x6A0D8B21)
+I (C:\app\KEILMDK\ARM\ARMCC\include\limits.h)(0x5D9B3482)
 F (../Core/Src/adc.c)(0x6A06CC70)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\adc.o --omf_browse water_test_project\adc.crf --depend water_test_project\adc.d)
 I (../Core/Inc/adc.h)(0x6A046CE9)
 I (../Core/Inc/main.h)(0x6A06E579)
@@ -1981,8 +1998,8 @@ I (../Bsp/led.h)(0x6A054244)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69EECD80)
-I (../Core/Inc/sys.h)(0x6A0AD922)
-F (..\Bsp\24cxx.c)(0x6A0ADDD5)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\24cxx.o --omf_browse water_test_project\24cxx.crf --depend water_test_project\24cxx.d)
+I (../Core/Inc/sys.h)(0x6A0D867A)
+F (..\Bsp\24cxx.c)(0x6A0D8B0A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\24cxx.o --omf_browse water_test_project\24cxx.crf --depend water_test_project\24cxx.d)
 I (..\Bsp\24cxx.h)(0x6A0ADD70)
 I (..\Bsp\myiic.h)(0x6A0ADCED)
 I (../Core/Inc/main.h)(0x6A06E579)
@@ -2037,7 +2054,7 @@ I (../Bsp/led.h)(0x6A054244)
 I (C:\app\KEILMDK\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 I (C:\app\KEILMDK\ARM\ARMCC\include\string.h)(0x5D9B3488)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69EECD80)
-I (../Core/Inc/sys.h)(0x6A0AD922)
+I (../Core/Inc/sys.h)(0x6A0D867A)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x69EECD80)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x69EECD80)
 F (../Middlewares/Third_Party/FreeRTOS/Source/croutine.c)(0x69EECD80)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../App -I ../Bsp -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F-I.\RTE\_water_test_project-IC:\app\KEILMDK\ARM\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include-IC:\app\KEILMDK\ARM\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="540" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o water_test_project\croutine.o --omf_browse water_test_project\croutine.crf --depend water_test_project\croutine.d)

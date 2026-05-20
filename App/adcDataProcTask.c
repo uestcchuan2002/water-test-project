@@ -12,6 +12,9 @@ static float calc_ph(float v_ph, float temperature);
 static float calc_turbidity(float v);
 static float calc_conductivity(float v, float temperature);
 
+/*adc传感器校准参数结构体实例-->开机，需要在EEPROM中读取*/
+calibration_para_t calibration_para;
+
 /**
  * adc采集数据处理函数
  */
@@ -101,12 +104,17 @@ static uint16_t moving_average_update(moving_avg_t *avg, uint16_t input)
     return (uint16_t)(sum / avg->count);
 }
 
+/**
+ * adc采集值转电压值
+ */
 static float adc_to_voltage(uint16_t adc)
 {
     return ((float)adc * 3.3f) / 4095.0f;
 }
 
-
+/**
+ * 电压转温度值
+ */
 static float calc_temperature(float v)
 {
     const float Vref = 3.3f;
@@ -131,12 +139,15 @@ static float calc_temperature(float v)
     return T - 273.15f;
 }
 
+/**
+ * 电压转ph值
+ */
 static float calc_ph(float v_ph, float temperature)
 {
     float temp_k = temperature + 273.15f;
-    float slope_t = PH_SLOPE_25C * temp_k / 298.15f;
+    float slope_t = calibration_para.PH_SLOPE_25C * temp_k / 298.15f;
 
-    float ph = slope_t * v_ph + PH_OFFSET;
+    float ph = slope_t * v_ph + calibration_para.PH_OFFSET;
 
     if (ph < 0.0f) {
         ph = 0.0f;
@@ -147,22 +158,28 @@ static float calc_ph(float v_ph, float temperature)
     return ph;
 }
 
+/**
+ * 电压转浊度值
+ */
 static float calc_turbidity(float v)
 {
-    float ntu = TURB_A * v * v + TURB_B * v + TURB_C;
+    float ntu = calibration_para.TURB_A * v * v + calibration_para.TURB_B * v + calibration_para.TURB_C;
 
     if (ntu < 0.0f) {
         ntu = 0.0f;
     }
-
+    if (ntu > 2000) ntu = ntu -2000;
     return ntu;
 }
 
+/**
+ * 电压转电导率
+ */
 static float calc_conductivity(float v, float temperature)
 {
-    float ec_raw = EC_CAL_GAIN * v + EC_CAL_OFFSET;
+    float ec_raw = calibration_para.EC_CAL_GAIN * v + calibration_para.EC_CAL_OFFSET;
 
-    float ec25 = ec_raw / (1.0f + EC_ALPHA * (temperature - 25.0f));
+    float ec25 = ec_raw / (1.0f + calibration_para.EC_ALPHA * (temperature - 25.0f));
 
     if (ec25 < 0.0f) {
         ec25 = 0.0f;

@@ -56,3 +56,16 @@ water_test_project\screenrxtask.o: ../Core/Inc/tim.h
 water_test_project\screenrxtask.o: ../Bsp/led.h
 water_test_project\screenrxtask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdio.h
 water_test_project\screenrxtask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\string.h
+water_test_project\screenrxtask.o: ..\App\displayTask.h
+water_test_project\screenrxtask.o: ..\App\adcDataProcTask.h
+water_test_project\screenrxtask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\math.h
+water_test_project\screenrxtask.o: ../Bsp/lcd.h
+water_test_project\screenrxtask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\stdlib.h
+water_test_project\screenrxtask.o: ..\App\adc_ui.h
+water_test_project\screenrxtask.o: ../Bsp/24cxx.h
+water_test_project\screenrxtask.o: ../Bsp/myiic.h
+water_test_project\screenrxtask.o: ../Core/Inc/sys.h
+water_test_project\screenrxtask.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+water_test_project\screenrxtask.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+water_test_project\screenrxtask.o: ..\App\screenTxTask.h
+water_test_project\screenrxtask.o: C:\app\KEILMDK\ARM\ARMCC\Bin\..\include\limits.h

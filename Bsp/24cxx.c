@@ -110,17 +110,20 @@ void AT24CXX_Read(u16 ReadAddr,u8 *pBuffer,u16 NumToRead)
 		*pBuffer++=AT24CXX_ReadOneByte(ReadAddr++);	
 		NumToRead--;
 	}
-}  
-//在AT24CXX里面的指定地址开始写入指定个数的数据
-//WriteAddr :开始写入的地址 对24c02为0~255
-//pBuffer   :数据数组首地址
-//NumToWrite:要写入数据的个数
-void AT24CXX_Write(u16 WriteAddr,u8 *pBuffer,u16 NumToWrite)
+}
+
+/**
+ * 在AT24CXX里面的指定地址开始写入指定个数的数据
+ * WriteAddr :开始写入的地址 对24c02为0~255
+ * pBuffer   :数据数组首地址
+ * NumToWrite:要写入数据的个数
+ */
+void AT24CXX_Write(u16 WriteAddr, u8 *pBuffer, u16 NumToWrite)
 {
-	while(NumToWrite--)
-	{
-		AT24CXX_WriteOneByte(WriteAddr,*pBuffer);
-		WriteAddr++;
-		pBuffer++;
-	}
+    while (NumToWrite--)
+    {
+        AT24CXX_WriteOneByte(WriteAddr, *pBuffer);
+        WriteAddr++;
+        pBuffer++;
+    }
 }

@@ -7,6 +7,11 @@
 #include "usart.h"
 #include <string.h>
 #include <stdio.h>
+#include "displayTask.h"
+#include <stdint.h>
+#include <limits.h>
+#include "24cxx.h"
+
 
 #define SCREEN_RX_DMA_SIZE     128
 #define SCREEN_RX_QUEUE_LEN    8
