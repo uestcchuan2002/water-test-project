@@ -32,6 +32,8 @@ water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm3
 water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_fsmc.h
 water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
+water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
 water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 water_test_project\stm32f4xx_hal_rcc.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h

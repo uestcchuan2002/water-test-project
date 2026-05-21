@@ -13,13 +13,17 @@
                 "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include",
                 "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2",
                 "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM4F",
+                "c:\\Users\\19927\\Desktop\\water_test_project\\FATFS\\Target",
+                "c:\\Users\\19927\\Desktop\\water_test_project\\FATFS\\App",
+                "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FatFs\\src",
                 "C:\\app\\KEILMDK\\ARM\\ARMCC\\include",
                 "C:\\app\\KEILMDK\\ARM\\ARMCC\\include\\rw",
                 "c:\\Users\\19927\\Desktop\\water_test_project\\MDK-ARM",
                 "c:\\Users\\19927\\Desktop\\water_test_project\\Core\\Src",
                 "c:\\Users\\19927\\Desktop\\water_test_project\\Drivers\\STM32F4xx_HAL_Driver\\Src",
                 "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FreeRTOS\\Source",
-                "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang"
+                "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang",
+                "c:\\Users\\19927\\Desktop\\water_test_project\\Middlewares\\Third_Party\\FatFs\\src\\option"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

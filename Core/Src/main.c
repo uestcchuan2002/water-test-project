@@ -1,26 +1,28 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2026 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2026 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
 #include "adc.h"
 #include "dma.h"
+#include "fatfs.h"
+#include "sdio.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -33,7 +35,7 @@
 #include "task.h"
 #include "lcd.h"
 #include "adc_ui.h"
-#include "24cxx.h"  
+#include "24cxx.h"
 #include "queue.h"
 #include "semphr.h"
 #include "screenTxTask.h"
@@ -77,7 +79,6 @@ int fputc(int ch, FILE *f)
 }
 
 
-
 /* USER CODE END 0 */
 
 /**
@@ -88,7 +89,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+   
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -115,8 +116,10 @@ int main(void)
   MX_ADC1_Init();
   MX_FSMC_Init();
   MX_USART3_UART_Init();
+  MX_SDIO_SD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-  
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -130,13 +133,12 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    while (1)
+    {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    
-  }
+    }
   /* USER CODE END 3 */
 }
 
@@ -164,7 +166,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 8;
   RCC_OscInitStruct.PLL.PLLN = 336;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -190,7 +192,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    if(hadc->Instance == ADC1)  
+    if (hadc->Instance == ADC1)
     {
         vTaskNotifyGiveFromISR(xMyAdcTaskHandle, &xHigherPriorityTaskWoken);
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
@@ -203,7 +205,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 
     if (huart->Instance == USART3)
     {
-        
+
         xSemaphoreGiveFromISR(screenTxDoneSem, &xHigherPriorityTaskWoken);
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     }
@@ -231,14 +233,14 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
         xQueueSendFromISR(screenRxQueue,
                           &msg,
                           &xHigherPriorityTaskWoken);
-        
+
         /*重新启动下一次 DMA + IDLE 接收*/
         HAL_UARTEx_ReceiveToIdle_DMA(&huart3,
                                      screenRxDmaBuf,
                                      SCREEN_RX_DMA_SIZE);
 
         __HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
-        
+
         /*切换中断上下文*/
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     }
@@ -274,11 +276,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+    /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while (1)
+    {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 #ifdef USE_FULL_ASSERT
@@ -292,8 +294,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

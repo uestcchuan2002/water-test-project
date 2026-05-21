@@ -33,6 +33,8 @@ water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sra
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_fsmc.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h
+water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 water_test_project\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -56,6 +58,15 @@ water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/qu
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 water_test_project\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 water_test_project\main.o: ../Core/Inc/dma.h
+water_test_project\main.o: ../FATFS/App/fatfs.h
+water_test_project\main.o: ../Middlewares/Third_Party/FatFs/src/ff.h
+water_test_project\main.o: ../Middlewares/Third_Party/FatFs/src/integer.h
+water_test_project\main.o: ../FATFS/Target/ffconf.h
+water_test_project\main.o: ../FATFS/Target/bsp_driver_sd.h
+water_test_project\main.o: ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h
+water_test_project\main.o: ../Middlewares/Third_Party/FatFs/src/diskio.h
+water_test_project\main.o: ../FATFS/Target/sd_diskio.h
+water_test_project\main.o: ../Core/Inc/sdio.h
 water_test_project\main.o: ../Core/Inc/usart.h
 water_test_project\main.o: ../Core/Inc/gpio.h
 water_test_project\main.o: ../Core/Inc/fsmc.h
