@@ -1,0 +1,15 @@
+# Keil/MDK build output
+MDK-ARM/water_test_project/
+MDK-ARM/*.lst
+
+# Keil/MDK user and generated files
+MDK-ARM/*.uvguix.*
+MDK-ARM/.vscode/*.log
+MDK-ARM/.vscode/*.log.lock
+MDK-ARM/.vscode/*.lock
+
+# Common editor/system noise
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
