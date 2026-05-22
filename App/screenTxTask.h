@@ -21,6 +21,7 @@ extern QueueHandle_t screenTxQueue;
 extern SemaphoreHandle_t screenTxDoneSem;
 
 void ScreenTx_Init(void);
+void ScreenTx_Task(void *argument);
 void Screen_SendCmd(const char *cmd);
 
 #endif

@@ -47,9 +47,13 @@ typedef struct
     uint8_t count;
 } moving_avg_t;
 
+#define SENSOR_DATA_QUEUE_LEN 1U
+
 extern QueueHandle_t sensorDataQueue;
 extern calibration_para_t calibration_para;
 
+void AdcDataProcTask_Init(void);
+void AdcDataProcTask_Run(void *argument);
 void adcDataPrcoTask(void);
 
 #endif

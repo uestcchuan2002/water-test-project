@@ -1,17 +1,39 @@
 #include "screenRxTask.h"
+#include "24cxx.h"
+#include "adcDataProcTask.h"
+#include "displayTask.h"
+#include "usart.h"
+#include <string.h>
 
 uint8_t screenRxDmaBuf[SCREEN_RX_DMA_SIZE];
-QueueHandle_t screenRxQueue;
+QueueHandle_t screenRxQueue = NULL;
 
-void ScreenRx_Init(void);
-void Screen_ParseRxData(uint8_t *data, uint16_t len);
+static void Screen_ParseRxData(uint8_t *data, uint16_t len);
 static int32_t BytesToInt32_LE(const uint8_t b[4]);
+static float Screen_ReadFixed100_LE(const uint8_t b[4]);
+
+void ScreenRx_Init(void)
+{
+    if (screenRxQueue == NULL)
+    {
+        screenRxQueue = xQueueCreate(SCREEN_RX_QUEUE_LEN, sizeof(ScreenRxMsg_t));
+        configASSERT(screenRxQueue != NULL);
+    }
+
+    configASSERT(HAL_UARTEx_ReceiveToIdle_DMA(&huart3,
+                                              screenRxDmaBuf,
+                                              SCREEN_RX_DMA_SIZE) == HAL_OK);
+    __HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
+}
 
 void ScreenRx_Task(void *argument)
 {
     ScreenRxMsg_t msg;
 
-    while (1)
+    (void)argument;
+    configASSERT(screenRxQueue != NULL);
+
+    for (;;)
     {
         if (xQueueReceive(screenRxQueue, &msg, portMAX_DELAY) == pdPASS)
         {
@@ -20,96 +42,57 @@ void ScreenRx_Task(void *argument)
     }
 }
 
-/**
- * 屏幕接收初始化
- */
-void ScreenRx_Init(void)
+static void Screen_ParseRxData(uint8_t *data, uint16_t len)
 {
-    /*创建screen接收队列*/
-    screenRxQueue = xQueueCreate(SCREEN_RX_QUEUE_LEN, sizeof(ScreenRxMsg_t));
-
-    /*启动 DMA + IDLE 接收*/
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart3,
-                                 screenRxDmaBuf,
-                                 SCREEN_RX_DMA_SIZE);
-    
-    /*关闭半传输中断*/
-    __HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
-
-    xTaskCreate(ScreenRx_Task,
-                "ScreenRx",
-                512,
-                NULL,
-                3,
-                NULL);
-}
-
-/**
- * screen 接收数据解析函数
- */
-uint8_t ph_temp[4];
-uint8_t ph_slope[4];
-uint8_t ph_offset[4];
-uint8_t ec_alpha[4];
-uint8_t ec_cal_gain[4];
-uint8_t ec_cal_offset[4];
-uint8_t ec_k_cell[4];
-
-
-
-void Screen_ParseRxData(uint8_t *data, uint16_t len)
-{
-    // HAL_UART_Transmit(&huart1, data, len, HAL_MAX_DELAY);
-
-    // 手动添加一个安全的缓冲区，能够使用字符串比较strcmp
     char buf[32];
-    if (len >= sizeof(buf)) len = sizeof(buf) - 1;
+
+    if (len >= sizeof(buf))
+    {
+        len = sizeof(buf) - 1U;
+    }
+
     memcpy(buf, data, len);
     buf[len] = '\0';
-    
-    // 页面切换
+
     if (strcmp(buf, "RS485_PARA_PAGE") == 0)
     {
-        currentPage = RS485_PARA_PAGE;
+        DisplayTask_SetPage(RS485_PARA_PAGE);
         return;
     }
     else if (strcmp(buf, "ADC_PARA_PAGE") == 0)
     {
-        currentPage = ADC_PARA_PAGE;
+        DisplayTask_SetPage(ADC_PARA_PAGE);
         return;
     }
-    else if (strcmp(buf, "PH_CAL_PAGE") == 0)  // 你现在的数据一定进这里！
+    else if (strcmp(buf, "PH_CAL_PAGE") == 0)
     {
-        currentPage = PH_CAL_PAGE;
+        DisplayTask_SetPage(PH_CAL_PAGE);
         return;
     }
     else if (strcmp(buf, "EC_CAL_PAGE") == 0)
     {
-        currentPage = EC_CAL_PAGE;
+        DisplayTask_SetPage(EC_CAL_PAGE);
+        return;
+    }
+    else if (strcmp(buf, "STORAGE_PAGE") == 0)
+    {
+        DisplayTask_SetPage(STORAGE_PAGE);
         return;
     }
 
-    // 校准参数更新
-    if (len >= 18 && memcmp(data, "ph_cal", 6) == 0) 
+    if (len >= 18U && memcmp(data, "ph_cal", 6U) == 0)
     {
-        memcpy(ph_temp, &data[6], 4);
-        memcpy(ph_slope, &data[6 + 4], 4);
-        memcpy(ph_offset, &data[6 + 8], 4);
-        calibration_para.PH_CAL_TEMP_C = (BytesToInt32_LE(ph_temp) / 100.0f);
-        calibration_para.PH_SLOPE_25C = (BytesToInt32_LE(ph_slope) / 100.0f);
-        calibration_para.PH_OFFSET = (BytesToInt32_LE(ph_offset) / 100.0f);
+        calibration_para.PH_CAL_TEMP_C = Screen_ReadFixed100_LE(&data[6]);
+        calibration_para.PH_SLOPE_25C = Screen_ReadFixed100_LE(&data[6 + 4]);
+        calibration_para.PH_OFFSET = Screen_ReadFixed100_LE(&data[6 + 8]);
         AT24CXX_Write(0, (uint8_t *)&calibration_para, sizeof(calibration_para_t));
     }
-    if (len >= 22 && memcmp(data, "ec_cal", 6) == 0) 
+    else if (len >= 22U && memcmp(data, "ec_cal", 6U) == 0)
     {
-        memcpy(ec_alpha, &data[6], 4);
-        memcpy(ec_cal_gain, &data[6 + 4], 4);
-        memcpy(ec_cal_offset, &data[6 + 8], 4);
-        memcpy(ec_k_cell, &data[6 + 12], 4);
-        calibration_para.EC_ALPHA = (BytesToInt32_LE(ec_alpha) / 100.0f);
-        calibration_para.EC_CAL_GAIN = (BytesToInt32_LE(ec_cal_gain) / 100.0f);
-        calibration_para.EC_CAL_OFFSET = (BytesToInt32_LE(ec_cal_offset) / 100.0f);
-        calibration_para.EC_K_CELL = (BytesToInt32_LE(ec_k_cell) / 100.0f);
+        calibration_para.EC_ALPHA = Screen_ReadFixed100_LE(&data[6]);
+        calibration_para.EC_CAL_GAIN = Screen_ReadFixed100_LE(&data[6 + 4]);
+        calibration_para.EC_CAL_OFFSET = Screen_ReadFixed100_LE(&data[6 + 8]);
+        calibration_para.EC_K_CELL = Screen_ReadFixed100_LE(&data[6 + 12]);
         AT24CXX_Write(0, (uint8_t *)&calibration_para, sizeof(calibration_para_t));
     }
 }
@@ -125,4 +108,7 @@ static int32_t BytesToInt32_LE(const uint8_t b[4])
     return (int32_t)u;
 }
 
-
+static float Screen_ReadFixed100_LE(const uint8_t b[4])
+{
+    return (float)BytesToInt32_LE(b) / 100.0f;
+}

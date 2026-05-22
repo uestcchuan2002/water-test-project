@@ -1,11 +1,13 @@
 #include "displayTask.h"
+#include "cmsis_os.h"
 #include "fatfs.h"
 #include "sdio.h"
 const char *textStrings[] = {
     "rs485_para",
     "adc_para",
     "ph_cal",
-    "ec_cal"};
+    "ec_cal",
+    "storage"};
 
 
 static void Screen_SetTextFloat(ScreenPage page, const char *obj, float value, uint8_t decimals);
@@ -16,9 +18,27 @@ void SDCardInfo(void);
 void FatFsTest(void);
 void update_And_printf_calibration_parameter(void);
 
+void DisplayTask_SetPage(ScreenPage page)
+{
+    currentPage = page;
+}
+
+ScreenPage DisplayTask_GetPage(void)
+{
+    return currentPage;
+}
+
 void displayTask(void)
 {
+    DisplayTask_Run(NULL);
+}
+
+void DisplayTask_Run(void *argument)
+{
     sensor_data_t recv_data;
+
+    (void)argument;
+    configASSERT(sensorDataQueue != NULL);
 
 	FatFsTest();
 	SDCardInfo();
@@ -41,7 +61,7 @@ void displayTask(void)
     {
         if (xQueueReceive(sensorDataQueue, &recv_data, portMAX_DELAY) == pdPASS)
         {            
-            switch (currentPage)
+            switch (DisplayTask_GetPage())
             {
                 case RS485_PARA_PAGE:
                 {
@@ -57,9 +77,9 @@ void displayTask(void)
                     Screen_SetTextFloat(ADC_PARA_PAGE, "tur", recv_data.turbidity, 2);
                     osDelay(100);
                     Screen_SetTextFloat(ADC_PARA_PAGE, "cond", recv_data.conductivity, 2);
-                }   
+                }
                 break;
-				 
+
             }            
         }
     }

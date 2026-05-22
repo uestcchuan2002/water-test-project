@@ -30,6 +30,7 @@
 #include "adcTask.h"
 #include "adcDataProcTask.h"
 #include "displayTask.h"
+#include "screenTxTask.h"
 #include "screenRxTask.h"
 /* USER CODE END Includes */
 
@@ -80,6 +81,20 @@ const osThreadAttr_t taskDisplay_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal6,
 };
+/* Definitions for taskScreenTx */
+osThreadId_t taskScreenTxHandle;
+const osThreadAttr_t taskScreenTx_attributes = {
+  .name = "taskScreenTx",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal1,
+};
+/* Definitions for taskScreenRx */
+osThreadId_t taskScreenRxHandle;
+const osThreadAttr_t taskScreenRx_attributes = {
+  .name = "taskScreenRx",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal2,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -90,6 +105,8 @@ void appTaskLED(void *argument);
 void appTaskADC(void *argument);
 void appTaskAdcDataProc(void *argument);
 void appTaskDisplay(void *argument);
+void appTaskScreenTx(void *argument);
+void appTaskScreenRx(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -118,6 +135,10 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  AdcTask_Init();
+  AdcDataProcTask_Init();
+  ScreenTx_Init();
+  ScreenRx_Init();
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -133,9 +154,13 @@ void MX_FREERTOS_Init(void) {
   /* creation of taskDisplay */
   taskDisplayHandle = osThreadNew(appTaskDisplay, NULL, &taskDisplay_attributes);
 
+  /* creation of taskScreenTx */
+  taskScreenTxHandle = osThreadNew(appTaskScreenTx, NULL, &taskScreenTx_attributes);
+
+  /* creation of taskScreenRx */
+  taskScreenRxHandle = osThreadNew(appTaskScreenRx, NULL, &taskScreenRx_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
-    ScreenTx_Init();
-    ScreenRx_Init();
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -172,7 +197,7 @@ void appTaskLED(void *argument)
 void appTaskADC(void *argument)
 {
   /* USER CODE BEGIN appTaskADC */
-    adcTask();
+  AdcTask_Run(argument);
   /* USER CODE END appTaskADC */
 }
 
@@ -186,7 +211,7 @@ void appTaskADC(void *argument)
 void appTaskAdcDataProc(void *argument)
 {
   /* USER CODE BEGIN appTaskAdcDataProc */
-  adcDataPrcoTask();
+  AdcDataProcTask_Run(argument);
   /* USER CODE END appTaskAdcDataProc */
 }
 
@@ -200,9 +225,36 @@ void appTaskAdcDataProc(void *argument)
 void appTaskDisplay(void *argument)
 {
   /* USER CODE BEGIN appTaskDisplay */
-  /* Infinite loop */
-  displayTask();
+  DisplayTask_Run(argument);
   /* USER CODE END appTaskDisplay */
+}
+
+/* USER CODE BEGIN Header_appTaskScreenTx */
+/**
+* @brief Function implementing the taskScreenTx thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_appTaskScreenTx */
+void appTaskScreenTx(void *argument)
+{
+  /* USER CODE BEGIN appTaskScreenTx */
+  ScreenTx_Task(argument);
+  /* USER CODE END appTaskScreenTx */
+}
+
+/* USER CODE BEGIN Header_appTaskScreenRx */
+/**
+* @brief Function implementing the taskScreenRx thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_appTaskScreenRx */
+void appTaskScreenRx(void *argument)
+{
+  /* USER CODE BEGIN appTaskScreenRx */
+  ScreenRx_Task(argument);
+  /* USER CODE END appTaskScreenRx */
 }
 
 /* Private application code --------------------------------------------------*/

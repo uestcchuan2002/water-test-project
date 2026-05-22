@@ -19,9 +19,14 @@ typedef enum
     RS485_PARA_PAGE,
     ADC_PARA_PAGE,
     PH_CAL_PAGE,
-    EC_CAL_PAGE
+    EC_CAL_PAGE,
+    STORAGE_PAGE
 } ScreenPage;
 
 extern volatile ScreenPage currentPage;
+
+void DisplayTask_Run(void *argument);
+void DisplayTask_SetPage(ScreenPage page);
+ScreenPage DisplayTask_GetPage(void);
 
 #endif

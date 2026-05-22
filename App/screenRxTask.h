@@ -3,15 +3,7 @@
 
 #include "FreeRTOS.h"
 #include "queue.h"
-#include "semphr.h"
-#include "usart.h"
-#include <string.h>
-#include <stdio.h>
-#include "displayTask.h"
 #include <stdint.h>
-#include <limits.h>
-#include "24cxx.h"
-
 
 #define SCREEN_RX_DMA_SIZE     128
 #define SCREEN_RX_QUEUE_LEN    8
@@ -26,6 +18,6 @@ typedef struct
 } ScreenRxMsg_t;
 
 void ScreenRx_Init(void);
+void ScreenRx_Task(void *argument);
 
 #endif
-

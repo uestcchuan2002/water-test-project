@@ -1,6 +1,6 @@
 #include "adcDataProcTask.h"
 
-QueueHandle_t sensorDataQueue;
+QueueHandle_t sensorDataQueue = NULL;
 static moving_avg_t adcMovAvg[ADC_CH_NUM];
 
 static uint16_t adc_median_filter(uint16_t *buf, uint8_t ch);
@@ -18,12 +18,24 @@ calibration_para_t calibration_para;
 /**
  * adc采集数据处理函数
  */
-void adcDataPrcoTask(void)
+void AdcDataProcTask_Init(void)
+{
+    if (sensorDataQueue == NULL)
+    {
+        sensorDataQueue = xQueueCreate(SENSOR_DATA_QUEUE_LEN, sizeof(sensor_data_t));
+        configASSERT(sensorDataQueue != NULL);
+    }
+}
+
+void AdcDataProcTask_Run(void *argument)
 {
     adc_raw_frame_t raw_frame;
     sensor_data_t sensor_data;
 
-    sensorDataQueue = xQueueCreate(1, sizeof(sensor_data_t));
+    (void)argument;
+
+    AdcDataProcTask_Init();
+    configASSERT(adcRawQueue != NULL);
 
     while (1)
     {
@@ -51,6 +63,11 @@ void adcDataPrcoTask(void)
             xQueueOverwrite(sensorDataQueue, &sensor_data);
         }
     }
+}
+
+void adcDataPrcoTask(void)
+{
+    AdcDataProcTask_Run(NULL);
 }
 
 /**

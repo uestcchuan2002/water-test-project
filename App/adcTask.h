@@ -5,17 +5,17 @@
 #include "adc.h"
 #include "tim.h"
 #include "led.h"
-#include <stdio.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 #include <stdint.h>
 #include <string.h>
 
-#include <queue.h>
+#define ADC_CH_NUM              4U
+#define ADC_SAMPLE_GROUPS       10U
+#define BATCH_DATA_LEN          (ADC_CH_NUM * ADC_SAMPLE_GROUPS)
+#define ADC_RAW_QUEUE_LEN       2U
 
-#define ADC_CH_NUM              4
-#define ADC_SAMPLE_GROUPS       10
-#define BATCH_DATA_LEN          ADC_CH_NUM * ADC_SAMPLE_GROUPS
-
-extern uint16_t DataBuffer[BATCH_DATA_LEN];
 extern TaskHandle_t xMyAdcTaskHandle;
 extern QueueHandle_t adcRawQueue;
 
@@ -48,6 +48,8 @@ typedef struct
     uint32_t tick;
 } sensor_data_t;
 
+void AdcTask_Init(void);
+void AdcTask_Run(void *argument);
 void adcTask(void);
 
 #endif

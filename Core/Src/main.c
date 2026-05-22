@@ -40,6 +40,7 @@
 #include "semphr.h"
 #include "screenTxTask.h"
 #include "screenRxTask.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
