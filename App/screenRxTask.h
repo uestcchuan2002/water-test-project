@@ -4,6 +4,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include <stdint.h>
+#include "storageTask.h"
 
 #define SCREEN_RX_DMA_SIZE     128
 #define SCREEN_RX_QUEUE_LEN    8

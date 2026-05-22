@@ -32,6 +32,7 @@
 #include "displayTask.h"
 #include "screenTxTask.h"
 #include "screenRxTask.h"
+#include "storageTask.h"
 #include "rtc.h"
 /* USER CODE END Includes */
 
@@ -96,6 +97,13 @@ const osThreadAttr_t taskScreenRx_attributes = {
     .stack_size = 512 * 4,
     .priority = (osPriority_t)osPriorityAboveNormal2,
 };
+/* Definitions for taskStorage */
+osThreadId_t taskStorageHandle;
+const osThreadAttr_t taskStorage_attributes = {
+    .name = "taskStorage",
+    .stack_size = 512 * 8,
+    .priority = (osPriority_t)osPriorityAboveNormal2,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -108,6 +116,7 @@ void appTaskAdcDataProc(void *argument);
 void appTaskDisplay(void *argument);
 void appTaskScreenTx(void *argument);
 void appTaskScreenRx(void *argument);
+void appTaskStorage(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -137,10 +146,13 @@ void MX_FREERTOS_Init(void)
 
     /* USER CODE BEGIN RTOS_QUEUES */
     /* add queues, ... */
+    
     AdcTask_Init();
     AdcDataProcTask_Init();
     ScreenTx_Init();
     ScreenRx_Init();
+    Storage_Init();
+
     /* USER CODE END RTOS_QUEUES */
 
     /* Create the thread(s) */
@@ -162,6 +174,8 @@ void MX_FREERTOS_Init(void)
     /* creation of taskScreenRx */
     taskScreenRxHandle = osThreadNew(appTaskScreenRx, NULL, &taskScreenRx_attributes);
 
+    /* creation of taskStorage */
+    taskStorageHandle = osThreadNew(appTaskStorage, NULL, &taskStorage_attributes);
     /* USER CODE BEGIN RTOS_THREADS */
     /* USER CODE END RTOS_THREADS */
 
@@ -187,7 +201,7 @@ void appTaskLED(void *argument)
 
     RTC_Init();
     lcd_init();
-    
+
     for (;;)
     {
         HAL_RTC_GetTime(&RTC_Handler, &RTC_TimeStruct, RTC_FORMAT_BIN);
@@ -270,6 +284,20 @@ void appTaskScreenRx(void *argument)
 {
     /* USER CODE BEGIN appTaskScreenRx */
     ScreenRx_Task(argument);
+    /* USER CODE END appTaskScreenRx */
+}
+
+/* USER CODE BEGIN Header_appTaskStorage */
+/**
+ * @brief Function implementing the TaskStorage thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_appTaskStorage */
+void appTaskStorage(void *argument)
+{
+    /* USER CODE BEGIN appTaskScreenRx */
+    Storage_Task(argument);
     /* USER CODE END appTaskScreenRx */
 }
 

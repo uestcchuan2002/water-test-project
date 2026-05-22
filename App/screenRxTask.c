@@ -45,6 +45,7 @@ void ScreenRx_Task(void *argument)
 static void Screen_ParseRxData(uint8_t *data, uint16_t len)
 {
     char buf[32];
+    StorageCmd_t cmd;
 
     if (len >= sizeof(buf))
     {
@@ -94,6 +95,18 @@ static void Screen_ParseRxData(uint8_t *data, uint16_t len)
         calibration_para.EC_CAL_OFFSET = Screen_ReadFixed100_LE(&data[6 + 8]);
         calibration_para.EC_K_CELL = Screen_ReadFixed100_LE(&data[6 + 12]);
         AT24CXX_Write(0, (uint8_t *)&calibration_para, sizeof(calibration_para_t));
+    }
+    else if (len >= 12U && memcmp(data, "stop_storage", 12U) == 0)
+    {
+        printf("stop storage\r\n");
+        cmd = CMD_STOP;
+        xQueueSend(g_StorageQueue, &cmd, 0);
+    }
+    else if (len >= 13U && memcmp(data, "start_storage", 13U) == 0)
+    {
+        printf("start storage\r\n");
+        cmd = CMD_START;
+        xQueueSend(g_StorageQueue, &cmd, 0);
     }
 }
 

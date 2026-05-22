@@ -41,16 +41,14 @@ void DisplayTask_Run(void *argument)
     configASSERT(sensorDataQueue != NULL);
 
 	// FatFsTest();
-	SDCardInfo();
+	// SDCardInfo();
 	
-    
     // ui_draw_static();
 
     AT24CXX_Init();
     update_And_printf_calibration_parameter();
 
     while (AT24CXX_Check()) {
-        // 检测不到24c02
         LED0_Troggle();
     }
 
@@ -137,6 +135,7 @@ void FatFsTest(void)
     }
     else if (f_res != FR_OK)
     {
+
         printf("Mount error: %d\r\n", f_res);
         return;
     }

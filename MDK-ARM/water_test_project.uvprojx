@@ -425,9 +425,14 @@
               <FilePath>..\App\screenRxTask.c</FilePath>
             </File>
             <File>
-              <FileName>screenRxTask.h</FileName>
+              <FileName>storageTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\storageTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>storageTask.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\App\screenRxTask.h</FilePath>
+              <FilePath>..\App\storageTask.h</FilePath>
             </File>
           </Files>
         </Group>
