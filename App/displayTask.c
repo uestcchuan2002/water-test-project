@@ -40,11 +40,11 @@ void DisplayTask_Run(void *argument)
     (void)argument;
     configASSERT(sensorDataQueue != NULL);
 
-	FatFsTest();
+	// FatFsTest();
 	SDCardInfo();
 	
-    lcd_init();
-    ui_draw_static();
+    
+    // ui_draw_static();
 
     AT24CXX_Init();
     update_And_printf_calibration_parameter();
