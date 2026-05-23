@@ -24,6 +24,7 @@ typedef enum
 } ScreenPage;
 
 extern volatile ScreenPage currentPage;
+extern const char *textStrings[];
 
 void DisplayTask_Run(void *argument);
 void DisplayTask_SetPage(ScreenPage page);

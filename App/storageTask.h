@@ -12,8 +12,11 @@
 #include "stdio.h"
 #include "string.h"
 #include "rtc.h"
+#include "adcTask.h"
+#include "displayTask.h"
 
 #define STORAGE_CMD_QUEUE_LEN   5
+#define STORAGE_DATA_QUEUE_LEN   8
 
 // 存储命令
 typedef enum {
@@ -23,6 +26,8 @@ typedef enum {
 } StorageCmd_t;
 
 extern QueueHandle_t g_StorageQueue;
+extern QueueHandle_t g_StorageDataQueue;
+
 
 void Storage_Init(void);
 void Storage_Task(void *argument);

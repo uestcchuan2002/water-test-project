@@ -61,6 +61,7 @@ void AdcDataProcTask_Run(void *argument)
             sensor_data.status = 0;
 
             xQueueOverwrite(sensorDataQueue, &sensor_data);
+            xQueueSend(g_StorageDataQueue, &sensor_data, 0);
         }
     }
 }

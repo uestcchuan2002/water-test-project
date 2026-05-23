@@ -42,7 +42,6 @@ void DisplayTask_Run(void *argument)
 
 	// FatFsTest();
 	// SDCardInfo();
-	
     // ui_draw_static();
 
     AT24CXX_Init();

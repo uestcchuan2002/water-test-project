@@ -1,9 +1,12 @@
 #include "storageTask.h"
 
-QueueHandle_t g_StorageQueue;
+QueueHandle_t g_StorageQueue = NULL;
+QueueHandle_t g_StorageDataQueue = NULL;
 
 static FATFS myFatFs;
 static uint8_t fatfs_mounted = 0U;
+
+const char *storageCounrt = "x0";
 
 FRESULT FATFS_Mount0_Auto(void)
 {
@@ -66,6 +69,24 @@ void Storage_Init(void)
         g_StorageQueue = xQueueCreate(STORAGE_CMD_QUEUE_LEN, sizeof(StorageCmd_t));
         configASSERT(g_StorageQueue != NULL);
     }
+
+    if (g_StorageDataQueue == NULL)
+    {
+        g_StorageDataQueue = xQueueCreate(STORAGE_DATA_QUEUE_LEN, sizeof(sensor_data_t));
+    }
+}
+
+static void updateStorageCount(ScreenPage page, const char *obj, int count)
+{
+    char cmd[128];
+
+    snprintf(cmd, sizeof(cmd),
+             "%s.%s.val=%d",
+             textStrings[page],
+             obj,
+             count);
+
+    Screen_SendCmd(cmd);
 }
 
 void Storage_Task(void *argument)
@@ -79,7 +100,10 @@ void Storage_Task(void *argument)
 
     RTC_TimeTypeDef RTC_TimeStruct;
     RTC_DateTypeDef RTC_DateStruct;
-    float sensorData = 0.0f;
+   
+
+    sensor_data_t recv_data;
+    int storage_count = 0; // 当前存储数量
 
     for (;;)
     {
@@ -99,7 +123,7 @@ void Storage_Task(void *argument)
                     taskENTER_CRITICAL();
                     HAL_RTC_GetTime(&RTC_Handler, &RTC_TimeStruct, RTC_FORMAT_BIN);
                     HAL_RTC_GetDate(&RTC_Handler, &RTC_DateStruct, RTC_FORMAT_BIN);
-                    sprintf(fileName, "water_test_20%02d_%02d_%02d_%02d_%02d_%02d.txt", RTC_DateStruct.Year,
+                    sprintf(fileName, "water_test_20%02d_%02d_%02d_%02d_%02d_%02d.csv", RTC_DateStruct.Year,
                             RTC_DateStruct.Month,
                             RTC_DateStruct.Date,
                             RTC_TimeStruct.Hours,
@@ -112,11 +136,16 @@ void Storage_Task(void *argument)
 
                     if (res == FR_OK)
                     {
+                        const char *header = "ph,temperature,turbidity,conductivity\r\n";
+                        f_write(&file, header, strlen(header), &writeLen);
+
                         isRecording = 1;
                         printf("开始存储：%s\n", fileName);
+                        storage_count = 0;
+                        updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
                     }
                 }
-                else 
+                else
                 {
                     printf("磁盘挂载失败\r\n");
                 }
@@ -133,19 +162,25 @@ void Storage_Task(void *argument)
         // ==========================================
         // 【关键】如果正在存储，一直写数据
         // ==========================================
-        if (isRecording == 1)
+        if (isRecording == 1 && xQueueReceive(g_StorageDataQueue, &recv_data, 0) == pdPASS)
         {
-            // 你的数据（可替换成真实数据）
-            sensorData += 0.1f;
-
             char buf[64];
-            sprintf(buf, "%.2f\r\n", sensorData);
+            sprintf(buf, "%.2f,%.2f,%.2f,%.2f\r\n", recv_data.ph,
+                    recv_data.temperature,
+                    recv_data.turbidity,
+                    recv_data.conductivity);
 
+            
             // 写入文件
+    
             f_write(&file, buf, strlen(buf), &writeLen);
+            ++storage_count;
+            updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
 
-            // 存储间隔（自己改）
-            osDelay(100);
+            if (storage_count >= 50000) {
+                storage_count = 0;
+            }
+            
         }
         else
         {
@@ -155,5 +190,6 @@ void Storage_Task(void *argument)
         }
     }
 }
+
 
 
