@@ -15,6 +15,7 @@ void ScreenTx_Init(void)
     {
         screenTxDoneSem = xSemaphoreCreateBinary();
         configASSERT(screenTxDoneSem != NULL);
+        // 第一次screenTxDoneSem信号量手动释放
         xSemaphoreGive(screenTxDoneSem);
     }
 }

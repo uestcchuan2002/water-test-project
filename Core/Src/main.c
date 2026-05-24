@@ -206,9 +206,14 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 
     if (huart->Instance == USART3)
     {
-
-        xSemaphoreGiveFromISR(screenTxDoneSem, &xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        // 这个信号量在释放前，一定要先存在，建立
+        if (screenTxDoneSem != NULL) 
+        {
+            // 在中断上下文中释放信号量，必须需要+ISR后缀的函数
+            xSemaphoreGiveFromISR(screenTxDoneSem, &xHigherPriorityTaskWoken);
+            // 如果刚才释放信号量唤醒了一个更高优先级的任务，就立刻请求一次任务切换，切换中更高级的任务
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        }
     }
 }
 

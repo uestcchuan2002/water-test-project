@@ -27,7 +27,8 @@ typedef enum {
 
 extern QueueHandle_t g_StorageQueue;
 extern QueueHandle_t g_StorageDataQueue;
-
+extern uint8_t isRecording;
+extern int storage_count;
 
 void Storage_Init(void);
 void Storage_Task(void *argument);

@@ -40,18 +40,16 @@ void DisplayTask_Run(void *argument)
     (void)argument;
     configASSERT(sensorDataQueue != NULL);
 
-	// FatFsTest();
-	// SDCardInfo();
-    // ui_draw_static();
-
     AT24CXX_Init();
+    // 从EEPROM中读取校准参数
     update_And_printf_calibration_parameter();
 
-    while (AT24CXX_Check()) {
+    while (AT24CXX_Check()) 
+    {
         LED0_Troggle();
     }
 
-    // 从EEPROM中读取校准参数
+    
     osDelay(500);
     
     while (1)

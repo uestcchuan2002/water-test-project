@@ -7,6 +7,8 @@ static FATFS myFatFs;
 static uint8_t fatfs_mounted = 0U;
 
 const char *storageCounrt = "x0";
+uint8_t isRecording = 0;    // 是否正在存储
+int storage_count = 0;      // 当前存储数量
 
 FRESULT FATFS_Mount0_Auto(void)
 {
@@ -93,17 +95,16 @@ void Storage_Task(void *argument)
 {
     FIL file;                // 文件对象
     FRESULT res;             // FatFS 返回值
-    uint8_t isRecording = 0; // 是否正在存储
+    
 
-    char fileName[32]; // 文件名
+    char fileName[64]; // 文件名
     uint32_t writeLen;
 
     RTC_TimeTypeDef RTC_TimeStruct;
     RTC_DateTypeDef RTC_DateStruct;
-   
 
     sensor_data_t recv_data;
-    int storage_count = 0; // 当前存储数量
+    
 
     for (;;)
     {
@@ -143,6 +144,7 @@ void Storage_Task(void *argument)
                         printf("开始存储：%s\n", fileName);
                         storage_count = 0;
                         updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
+                        osDelay(50);
                     }
                 }
                 else
@@ -170,26 +172,32 @@ void Storage_Task(void *argument)
                     recv_data.turbidity,
                     recv_data.conductivity);
 
-            
             // 写入文件
-    
             f_write(&file, buf, strlen(buf), &writeLen);
-            ++storage_count;
-            updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
-
-            if (storage_count >= 50000) {
-                storage_count = 0;
-            }
             
+            ++storage_count;
+            // 每隔5条刷新一次
+            if (storage_count % 5 == 0) 
+            {
+                updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
+            }
+            // 复位
+            if (storage_count >= 50000)
+                storage_count = 0;
+            
+            osDelay(1);
         }
         else
         {
-            // 没存储时，降低CPU占用
-            LED0_Troggle();
-            osDelay(1000);
+            if (isRecording == 1)
+            {
+                osDelay(1); // 正在存储，只短暂让出 CPU
+            }
+            else
+            {
+                LED0_Troggle();
+                osDelay(1000); // 没在存储，才慢速闪灯
+            }
         }
     }
 }
-
-
-

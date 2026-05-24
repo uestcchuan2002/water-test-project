@@ -212,6 +212,12 @@ void appTaskLED(void *argument)
         lcd_show_string(30, 50, 210, 16, 32, (char *)tbuf, BLUE);
         sprintf((char *)tbuf, "Week:%d", RTC_DateStruct.WeekDay);
         lcd_show_string(30, 90, 210, 16, 32, (char *)tbuf, BLUE);
+        sprintf((char *)tbuf, "Page:%s", textStrings[currentPage]);
+        lcd_show_string(30, 130, 300, 16, 32, (char *)tbuf, BLUE);
+        sprintf((char *)tbuf, "Storage:%s", isRecording ? "ON " : "OFF");
+        lcd_show_string(30, 170, 300, 16, 32, (char *)tbuf, BLUE);
+        sprintf((char *)tbuf, "Sto_Num:%d", isRecording ? storage_count : 0);
+        lcd_show_string(30, 210, 300, 16, 32, (char *)tbuf, BLUE);
         osDelay(1000);
     }
     /* USER CODE END appTaskLED */
