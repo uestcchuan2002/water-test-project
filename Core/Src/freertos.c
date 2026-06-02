@@ -34,6 +34,8 @@
 #include "screenRxTask.h"
 #include "storageTask.h"
 #include "rtc.h"
+#include "canTxTask.h"
+#include "canRxTask.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +61,7 @@
 osThreadId_t taskLEDHandle;
 const osThreadAttr_t taskLED_attributes = {
     .name = "taskLED",
-    .stack_size = 128 * 12,
+    .stack_size = 128 * 24,
     .priority = (osPriority_t)osPriorityNormal,
 };
 /* Definitions for taskADC */
@@ -104,6 +106,20 @@ const osThreadAttr_t taskStorage_attributes = {
     .stack_size = 512 * 8,
     .priority = (osPriority_t)osPriorityAboveNormal2,
 };
+/* Definitions for taskCanTx */
+osThreadId_t taskCanTxHandle;
+const osThreadAttr_t taskCanTx_attributes = {
+    .name = "taskCanTx",
+    .stack_size = 512 * 8,
+    .priority = (osPriority_t)osPriorityAboveNormal3,
+};
+/* Definitions for taskCanRx */
+osThreadId_t taskCanRxHandle;
+const osThreadAttr_t taskCanRx_attributes = {
+    .name = "taskCanRx",
+    .stack_size = 512 * 8,
+    .priority = (osPriority_t)osPriorityAboveNormal3,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -117,6 +133,8 @@ void appTaskDisplay(void *argument);
 void appTaskScreenTx(void *argument);
 void appTaskScreenRx(void *argument);
 void appTaskStorage(void *argument);
+void appTaskCanTx(void *argument);
+void appTaskCanRx(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -176,6 +194,13 @@ void MX_FREERTOS_Init(void)
 
     /* creation of taskStorage */
     taskStorageHandle = osThreadNew(appTaskStorage, NULL, &taskStorage_attributes);
+	
+	/* creation of taskCanTx */
+    taskCanTxHandle = osThreadNew(appTaskCanTx, NULL, &taskCanTx_attributes);
+	
+    /* creation of taskCanRx */
+    taskCanRxHandle = osThreadNew(appTaskCanRx, NULL, &taskCanRx_attributes);
+    
     /* USER CODE BEGIN RTOS_THREADS */
     /* USER CODE END RTOS_THREADS */
 
@@ -305,6 +330,30 @@ void appTaskStorage(void *argument)
     /* USER CODE BEGIN appTaskScreenRx */
     Storage_Task(argument);
     /* USER CODE END appTaskScreenRx */
+}
+
+/* USER CODE BEGIN Header_appTaskCanTx */
+/**
+ * @brief Function implementing the TaskCanTx thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_appTaskCanTx */
+void appTaskCanTx(void *argument)
+{
+	CanTxTask_Run(argument);
+}
+
+/* USER CODE BEGIN Header_appTaskCanRx */
+/**
+ * @brief Function implementing the TaskCanRx thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_appTaskCanRx */
+void appTaskCanRx(void *argument)
+{
+	CanRxTask_Run(argument);
 }
 
 /* Private application code --------------------------------------------------*/

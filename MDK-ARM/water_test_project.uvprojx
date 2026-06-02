@@ -430,9 +430,24 @@
               <FilePath>..\App\storageTask.c</FilePath>
             </File>
             <File>
-              <FileName>storageTask.h</FileName>
+              <FileName>canTxTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\canTxTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>canTxTask.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\App\storageTask.h</FilePath>
+              <FilePath>..\App\canTxTask.h</FilePath>
+            </File>
+            <File>
+              <FileName>canRxTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\canRxTask.c</FilePath>
+            </File>
+            <File>
+              <FileName>canRxTask.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\canRxTask.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1618,6 +1633,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rtc_ex.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_hal_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_can.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1657,6 +1677,26 @@
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Bsp\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\can.c</FilePath>
+            </File>
+            <File>
+              <FileName>can.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Bsp\can.h</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Bsp\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Bsp\key.h</FilePath>
             </File>
           </Files>
         </Group>

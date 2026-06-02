@@ -4646,6 +4646,9 @@ TickType_t uxReturn;
 
 				if( xTicksToWait > ( TickType_t ) 0 )
 				{
+                    /**
+                     * 把当前任务加入 delayed list，也就是阻塞等待列表
+                     */
 					prvAddCurrentTaskToDelayedList( xTicksToWait, pdTRUE );
 					traceTASK_NOTIFY_TAKE_BLOCK();
 
@@ -4657,6 +4660,10 @@ TickType_t uxReturn;
 				}
 				else
 				{
+                    /**
+                     * mtCOVERAGE_TEST_MARKER():
+                     * 是 FreeRTOS 用于代码覆盖率测试的占位标记，应用程序里通常不需要关心，也不应该依赖它实现任何功能。
+                     */
 					mtCOVERAGE_TEST_MARKER();
 				}
 			}
@@ -4846,10 +4853,12 @@ TickType_t uxReturn;
 			notification then unblock it now. */
 			if( ucOriginalNotifyState == taskWAITING_NOTIFICATION )
 			{
+                /* 将当前任务从它当前的链表中移除 */
 				( void ) uxListRemove( &( pxTCB->xStateListItem ) );
+                /* 将当前任务加入到就绪链表 */
 				prvAddTaskToReadyList( pxTCB );
 
-				/* The task should not have been on an event list. */
+				/* 该任务本不应处于事件链表中 */
 				configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
 
 				#if( configUSE_TICKLESS_IDLE != 0 )

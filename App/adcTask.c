@@ -28,6 +28,11 @@ void AdcTask_Run(void *argument)
 
     for (;;)
     {
+        /**
+         * ulTaskNotifyTake(...):当前任务等待自己的 Task Notification 计数值变为非 0
+         * pdTRUE：函数返回前会把通知值清零。也就是“拿走通知后清空”
+         * portMAX_DELAY：一直阻塞等待，直到有别的任务或中断发通知过来
+         */
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         memcpy(frame.raw, DataBuffer, sizeof(DataBuffer));
