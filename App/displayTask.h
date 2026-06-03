@@ -18,6 +18,7 @@ typedef enum
 {
     RS485_PARA_PAGE,
     ADC_PARA_PAGE,
+    CAN_PARA_PAGE,
     PH_CAL_PAGE,
     EC_CAL_PAGE,
     STORAGE_PAGE

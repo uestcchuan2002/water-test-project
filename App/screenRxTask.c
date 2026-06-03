@@ -65,6 +65,11 @@ static void Screen_ParseRxData(uint8_t *data, uint16_t len)
         DisplayTask_SetPage(ADC_PARA_PAGE);
         return;
     }
+    else if (strcmp(buf, "CAN_PARA_PAGE") == 0)
+    {
+        DisplayTask_SetPage(CAN_PARA_PAGE);
+        return;
+    }
     else if (strcmp(buf, "PH_CAL_PAGE") == 0)
     {
         DisplayTask_SetPage(PH_CAL_PAGE);
