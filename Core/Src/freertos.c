@@ -118,7 +118,7 @@ osThreadId_t taskCanRxHandle;
 const osThreadAttr_t taskCanRx_attributes = {
     .name = "taskCanRx",
     .stack_size = 512 * 8,
-    .priority = (osPriority_t)osPriorityAboveNormal3,
+    .priority = (osPriority_t)osPriorityAboveNormal4,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -170,6 +170,8 @@ void MX_FREERTOS_Init(void)
     ScreenTx_Init();
     ScreenRx_Init();
     Storage_Init();
+    CanTxTask_Init();
+    CanRxTask_Init();
 
     /* USER CODE END RTOS_QUEUES */
 

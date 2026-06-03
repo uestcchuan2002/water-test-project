@@ -1,17 +1,19 @@
 #ifndef __CANRXTASK_H
 #define __CANRXTASK_H
 
-#include "main.h"
 #include "cmsis_os.h"
-#include "FreeRTOS.h"
+#include "task.h"
 #include "queue.h"
-#include "semphr.h"
-#include "usart.h"
-#include <string.h>
-#include <stdio.h>
 #include "can.h"
-#include "lcd.h"
+#include "canSensorProtocol.h"
+#include <stdio.h>
 
-void CanRxTask_Run(void * argument);
+#define CAN_SENSOR_DATA_QUEUE_LEN 8U
+
+extern QueueHandle_t canSensorDataQueue;
+
+void CanRxTask_Init(void);
+void CanRxTask_Run(void *argument);
+uint8_t CanRxTask_GetLatest(CanSensorType_t type, CanSensorSample_t *sample);
 
 #endif

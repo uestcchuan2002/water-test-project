@@ -449,6 +449,16 @@
               <FileType>5</FileType>
               <FilePath>..\App\canRxTask.h</FilePath>
             </File>
+            <File>
+              <FileName>canSensorProtocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\canSensorProtocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>canSensorProtocol.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\canSensorProtocol.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -1,196 +1,320 @@
 #include "can.h"
+#include <string.h>
 
-CAN_HandleTypeDef	CAN1_Handler;   	//	CAN1句柄
-CAN_TxHeaderTypeDef	TxHeader;      		//	发送
-CAN_RxHeaderTypeDef	RxHeader;      		//	接收
+CAN_HandleTypeDef CAN1_Handler;
+QueueHandle_t can1RxQueue = NULL;
 
-/*
-	1. CAN初始化
-	2. tsjw: 重新同步跳跃时间单元. 范围: CAN_SJW_1TQ ~ CAN_SJW_4TQ
-	3. tbs2: 时间段2的时间单元.    范围: CAN_BS2_1TQ ~ CAN_BS2_8TQ
-	4. tbs1: 时间段1的时间单元.    范围: CAN_BS1_1TQ ~ CAN_BS1_16TQ
-	5. brp : 波特率分频器. 		   范围: 1 ~ 1024; tq = (brp) * tpclk1
-	6. mode: CAN_MODE_NORMAL,普通模式; CAN_MODE_LOOPBACK,回环模式;
-	7. example:
-	波特率 = Fpclk1/((tbs1+tbs2+1)*brp); 其中tbs1和tbs2我们只用关注标识符上标志的序号，例如CAN_BS2_1TQ，我们就认为tbs2=1来计算即可。
-	Fpclk1的时钟在初始化的时候设置为42M,如果设置CAN1_Mode_Init(CAN_SJW_1tq,CAN_BS2_6tq,CAN_BS1_7tq,6,CAN_MODE_LOOPBACK);
-	则波特率为:42M/((6+7+1)*6)=500Kbps
-	返回值:0,初始化OK;
-	其他,初始化失败;
-*/
+static volatile uint32_t can1RxOverflowCount = 0U;
+static volatile uint32_t can1LastErrorCode = 0U;
+
+/**
+ * @brief 初始化 CAN1 接收消息队列。
+ *
+ * 该函数用于创建一个 FreeRTOS 队列，用于存储从 CAN1 接口接收到的帧数据。
+ * 若队列尚未创建（即 can1RxQueue 为 NULL），则调用 xQueueCreate 创建指定长度和元素大小的队列，
+ * 并通过 configASSERT 确保队列创建成功。若队列已存在，则不执行任何操作。
+ *
+ * @note 本函数无参数，亦无返回值。
+ */
+void CAN1_RxQueue_Init(void)
+{
+    if (can1RxQueue == NULL)
+    {
+        can1RxQueue = xQueueCreate(CAN1_RX_QUEUE_LEN, sizeof(CanFrame_t));
+        configASSERT(can1RxQueue != NULL);
+    }
+}
+
+
+/**
+ * @brief 初始化CAN1外设的工作模式和波特率时序参数。
+ *
+ * 该函数配置CAN1控制器的初始化参数，包括波特率分频器、同步跳转宽度、时间段1/2等，
+ * 并调用HAL库完成底层硬件初始化。同时会初始化CAN接收队列。
+ *
+ * @param[in] tsjw 同步跳转宽度（Time Segment Jump Width），取值范围通常为1~4，单位为时间量子（TQ）。
+ * @param[in] tbs2 时间段2（Time Segment 2），即相位缓冲段2，取值范围通常为1~8，单位为TQ。
+ * @param[in] tbs1 时间段1（Time Segment 1），即传播段+相位缓冲段1，取值范围通常为1~16，单位为TQ。
+ * @param[in] brp 波特率预分频器（Baud Rate Prescaler），用于设置CAN位时间的基本时钟分频，取值范围通常为1~1024。
+ * @param[in] mode CAN工作模式，如正常模式（CAN_MODE_NORMAL）、回环模式（CAN_MODE_LOOPBACK）等，由HAL库定义。
+ *
+ * @return uint8_t 初始化结果：
+ *         - 0U：初始化成功；
+ *         - 1U：初始化失败，错误码已存入全局变量 can1LastErrorCode。
+ */
 uint8_t CAN1_Mode_Init(uint32_t tsjw, uint32_t tbs2, uint32_t tbs1, uint32_t brp, uint32_t mode)
 {
-	CAN_InitTypeDef CAN_InitConf;
-	
-	CAN1_Handler.Instance = CAN1;
-	CAN1_Handler.Init = CAN_InitConf;
-	
-	/* 预分频，APB1总线 */
-	CAN1_Handler.Init.Prescaler = brp;
-	/* 模式设置 */
-	CAN1_Handler.Init.Mode = mode;
-	/* 设置再同步的补偿最大值 */
-	CAN1_Handler.Init.SyncJumpWidth = tsjw;
-	/* tbs1大小 */
-	CAN1_Handler.Init.TimeSeg1 = tbs1;		
-	/* tbs2大小 */	
-    CAN1_Handler.Init.TimeSeg2 = tbs2;				
-	/* 非时间触发通信模式  */
-    CAN1_Handler.Init.TimeTriggeredMode = DISABLE;	
-	/* 软件自动离线管理  */
-    CAN1_Handler.Init.AutoBusOff = DISABLE;			
-	/* 睡眠模式通过软件唤醒 */
-    CAN1_Handler.Init.AutoWakeUp = DISABLE;			
-	/* 禁止报文自动传送 */
-    CAN1_Handler.Init.AutoRetransmission=ENABLE;	
-	/* 报文不锁定,新的覆盖旧的  */
-    CAN1_Handler.Init.ReceiveFifoLocked=DISABLE;	
-	/* 优先级由报文标识符决定  */
-    CAN1_Handler.Init.TransmitFifoPriority=DISABLE;
-	
-	/* 初始化 */
-	if(HAL_CAN_Init(&CAN1_Handler) != HAL_OK) 
-	{
-		return 1;
-	}
-		
-    return 0;
+    CAN1_RxQueue_Init();
+
+    memset(&CAN1_Handler, 0, sizeof(CAN1_Handler));
+    CAN1_Handler.Instance = CAN1;
+    CAN1_Handler.Init.Prescaler = brp;
+    CAN1_Handler.Init.Mode = mode;
+    CAN1_Handler.Init.SyncJumpWidth = tsjw;
+    CAN1_Handler.Init.TimeSeg1 = tbs1;
+    CAN1_Handler.Init.TimeSeg2 = tbs2;
+    CAN1_Handler.Init.TimeTriggeredMode = DISABLE;
+    CAN1_Handler.Init.AutoBusOff = ENABLE;
+    CAN1_Handler.Init.AutoWakeUp = DISABLE;
+    CAN1_Handler.Init.AutoRetransmission = ENABLE;
+    CAN1_Handler.Init.ReceiveFifoLocked = DISABLE;
+    CAN1_Handler.Init.TransmitFifoPriority = DISABLE;
+
+    if (HAL_CAN_Init(&CAN1_Handler) != HAL_OK)
+    {
+        can1LastErrorCode = HAL_CAN_GetError(&CAN1_Handler);
+        return 1U;
+    }
+
+    return 0U;
 }
 
-/*
-	1. CAN底层驱动，引脚配置，时钟配置，中断配置
-	2. 此函数会被HAL_CAN_Init()调用
-	3. hcan:CAN句柄
-*/
-void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
+
+void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan)
 {
     GPIO_InitTypeDef GPIO_Initure;
-    
-    __HAL_RCC_CAN1_CLK_ENABLE();                // 使能CAN1时钟
-    __HAL_RCC_GPIOA_CLK_ENABLE();			    // 开启GPIOA时钟
-	
-    GPIO_Initure.Pin=GPIO_PIN_11|GPIO_PIN_12;   // PA11,12
-    GPIO_Initure.Mode=GPIO_MODE_AF_PP;          // 推挽复用
-    GPIO_Initure.Pull=GPIO_PULLUP;              // 上拉
-    GPIO_Initure.Speed=GPIO_SPEED_FAST;         // 快速
-    GPIO_Initure.Alternate=GPIO_AF9_CAN1;       // 复用为 CAN1
-    HAL_GPIO_Init(GPIOA,&GPIO_Initure);         // 初始化
+
+    if (hcan->Instance != CAN1)
+    {
+        return;
+    }
+
+    __HAL_RCC_CAN1_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    GPIO_Initure.Pin = GPIO_PIN_11 | GPIO_PIN_12;
+    GPIO_Initure.Mode = GPIO_MODE_AF_PP;
+    GPIO_Initure.Pull = GPIO_PULLUP;
+    GPIO_Initure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_Initure.Alternate = GPIO_AF9_CAN1;
+    HAL_GPIO_Init(GPIOA, &GPIO_Initure);
+
+    HAL_NVIC_SetPriority(CAN1_RX0_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(CAN1_RX0_IRQn);
+    HAL_NVIC_SetPriority(CAN1_SCE_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(CAN1_SCE_IRQn);
 }
 
-/*
-	1. can的过滤器配置
-	2. 开启can外设
-	3. 激活can接收邮箱
-	4. 配置发送参数
-*/
+void HAL_CAN_MspDeInit(CAN_HandleTypeDef *hcan)
+{
+    if (hcan->Instance != CAN1)
+    {
+        return;
+    }
+
+    HAL_NVIC_DisableIRQ(CAN1_RX0_IRQn);
+    HAL_NVIC_DisableIRQ(CAN1_SCE_IRQn);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11 | GPIO_PIN_12);
+    __HAL_RCC_CAN1_CLK_DISABLE();
+}
+
+uint8_t CAN1_Config(void)
+{
+    CAN_FilterTypeDef sFilterConfig;
+
+    CAN1_RxQueue_Init();
+
+    memset(&sFilterConfig, 0, sizeof(sFilterConfig));
+    sFilterConfig.FilterBank = 0;
+    sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+    sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+    sFilterConfig.FilterIdHigh = 0x0000;
+    sFilterConfig.FilterIdLow = 0x0000;
+    sFilterConfig.FilterMaskIdHigh = 0x0000;
+    sFilterConfig.FilterMaskIdLow = 0x0000;
+    sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+    sFilterConfig.FilterActivation = ENABLE;
+    sFilterConfig.SlaveStartFilterBank = 14;
+
+    if (HAL_CAN_ConfigFilter(&CAN1_Handler, &sFilterConfig) != HAL_OK)
+    {
+        can1LastErrorCode = HAL_CAN_GetError(&CAN1_Handler);
+        return 1U;
+    }
+
+    if (HAL_CAN_Start(&CAN1_Handler) != HAL_OK)
+    {
+        can1LastErrorCode = HAL_CAN_GetError(&CAN1_Handler);
+        return 2U;
+    }
+
+    if (HAL_CAN_ActivateNotification(&CAN1_Handler,
+                                     CAN_IT_RX_FIFO0_MSG_PENDING |
+                                     CAN_IT_RX_FIFO0_FULL |
+                                     CAN_IT_RX_FIFO0_OVERRUN |
+                                     CAN_IT_ERROR_WARNING |
+                                     CAN_IT_ERROR_PASSIVE |
+                                     CAN_IT_BUSOFF |
+                                     CAN_IT_LAST_ERROR_CODE |
+                                     CAN_IT_ERROR) != HAL_OK)
+    {
+        can1LastErrorCode = HAL_CAN_GetError(&CAN1_Handler);
+        return 3U;
+    }
+
+    return 0U;
+}
+
 void CAN_Config(void)
 {
-	CAN_FilterTypeDef  sFilterConfig;
-
-	/*##-1- Configure the CAN Filter ###########################################*/
-	sFilterConfig.FilterBank = 0;
-	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-	sFilterConfig.FilterIdHigh = 0x0000;
-	sFilterConfig.FilterIdLow = 0x0000;
-	sFilterConfig.FilterMaskIdHigh = 0x0000;
-	sFilterConfig.FilterMaskIdLow = 0x0000;
-	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
-	sFilterConfig.FilterActivation = ENABLE;
-	sFilterConfig.SlaveStartFilterBank = 14;
-
-	if (HAL_CAN_ConfigFilter(&CAN1_Handler, &sFilterConfig) != HAL_OK)
-	{
-		/* Filter configuration Error */
-		while(1)
-		{
-		}
-	}
-
-	/*##-2- Start the CAN peripheral ###########################################*/
-	if (HAL_CAN_Start(&CAN1_Handler) != HAL_OK)
-	{
-		/* Start Error */
-		while(1)
-		{
-		}
-	}
-
-	/*##-3- Activate CAN RX notification #######################################*/
-	if (HAL_CAN_ActivateNotification(&CAN1_Handler, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
-	{
-		/* Notification Error */
-		while(1)
-		{
-		}
-	}
-
-	/*##-4- Configure Transmission process #####################################*/
-	TxHeader.StdId = 0x321;
-	TxHeader.ExtId = 0x01;
-	TxHeader.RTR = CAN_RTR_DATA;
-	TxHeader.IDE = CAN_ID_STD;
-	TxHeader.DLC = 2;
-	TxHeader.TransmitGlobalTime = DISABLE;
+    configASSERT(CAN1_Config() == 0U);
 }
 
+/**
+ * @brief 通过CAN1外设发送一个标准帧数据
+ *
+ * 此函数用于通过STM32的CAN1外设发送一个标准标识符（11位）的数据帧。
+ * 函数会等待可用的发送邮箱，并在超时或发生错误时返回相应的错误码。
+ *
+ * @param[in] std_id      标准CAN标识符（11位），有效范围为0x000 ~ 0x7FF
+ * @param[in] data        指向要发送的数据缓冲区的指针；当len > 0时，该指针不得为NULL
+ * @param[in] len         要发送的数据长度（字节数），有效范围为0 ~ 8
+ * @param[in] timeout_ms  发送等待超时时间（毫秒）；若为0，则表示不等待（立即返回）
+ *
+ * @return uint8_t        函数执行结果状态码：
+ *                        - 0U: 发送成功
+ *                        - 1U: 参数错误（ID超出范围、长度非法或data指针无效）
+ *                        - 2U: 等待发送邮箱超时
+ *                        - 3U: HAL库底层发送失败，错误码已保存至全局变量can1LastErrorCode
+ */
+uint8_t CAN1_Send_Frame(uint32_t std_id, const uint8_t *data, uint8_t len, uint32_t timeout_ms)
+{
+    CAN_TxHeaderTypeDef txHeader;
+    uint32_t txMailbox;
+    uint8_t txData[8] = {0};
+    uint32_t start;
 
-
-/*
-	1. can发送一组数据(固定格式:ID为0X12,标准帧,数据帧)	
-	2. len:数据长度(最大为8)				     
-	3. msg:数据指针,最大为8个字节.
-	4. 返回值:0,成功;
-		 其他,失败;
-*/
-uint8_t CAN1_Send_Msg(uint8_t* msg, uint8_t len)
-{	
-    uint8_t i=0;
-	uint32_t TxMailbox;
-	uint8_t message[8];
-    TxHeader.StdId = 0X12;        //标准标识符
-    TxHeader.ExtId = 0x12;        //扩展标识符(29位)
-    TxHeader.IDE = CAN_ID_STD;    //使用标准帧
-    TxHeader.RTR = CAN_RTR_DATA;  //数据帧
-    TxHeader.DLC = len;                
-    for(i = 0; i < len; i++)
+    /* 参数合法性校验：检查数据长度、数据指针和标准ID范围 */
+    if ((len > 8U) || ((len > 0U) && (data == NULL)) || (std_id > 0x7FFU))
     {
-		message[i] = msg[i];
-	}
-    if(HAL_CAN_AddTxMessage(&CAN1_Handler, &TxHeader, message, &TxMailbox) != HAL_OK)//发送
-	{
-		return 1;
-	}
-	while(HAL_CAN_GetTxMailboxesFreeLevel(&CAN1_Handler) != 3) {}
-    return 0;
+        return 1U;
+    }
+
+    memcpy(txData, data, len);
+
+    /* 等待有空闲的发送邮箱，支持超时机制 */
+    start = HAL_GetTick();
+    while (HAL_CAN_GetTxMailboxesFreeLevel(&CAN1_Handler) == 0U)
+    {
+        if ((timeout_ms == 0U) || ((HAL_GetTick() - start) >= timeout_ms))
+        {
+            return 2U;
+        }
+    }
+
+    /* 配置CAN发送帧头参数，使用标准帧格式 */
+    memset(&txHeader, 0, sizeof(txHeader));
+    txHeader.StdId = std_id;
+    txHeader.ExtId = 0U;
+    txHeader.IDE = CAN_ID_STD;
+    txHeader.RTR = CAN_RTR_DATA;
+    txHeader.DLC = len;
+    txHeader.TransmitGlobalTime = DISABLE;
+
+    /* 调用HAL库将消息加入发送队列 */
+    if (HAL_CAN_AddTxMessage(&CAN1_Handler, &txHeader, txData, &txMailbox) != HAL_OK)
+    {
+        can1LastErrorCode = HAL_CAN_GetError(&CAN1_Handler);
+        return 3U;
+    }
+
+    return 0U;
 }
 
-/*
-	1. can口接收数据查询
-	2. buf:数据缓存区;	 
-	3. 返回值:0,无数据被收到;
-		 其他,接收的数据长度;
-*/
+uint8_t CAN1_Receive_Frame(CanFrame_t *frame, uint32_t timeout_ms)
+{
+    TickType_t waitTicks;
+
+    if ((frame == NULL) || (can1RxQueue == NULL))
+    {
+        return 1U;
+    }
+
+    waitTicks = (timeout_ms == CAN1_RX_WAIT_FOREVER) ? portMAX_DELAY : pdMS_TO_TICKS(timeout_ms);
+
+    if (xQueueReceive(can1RxQueue, frame, waitTicks) != pdPASS)
+    {
+        return 2U;
+    }
+
+    return 0U;
+}
+
+uint8_t CAN1_Send_Msg(uint8_t *msg, uint8_t len)
+{
+    return CAN1_Send_Frame(0x12U, msg, len, 10U);
+}
+
 uint8_t CAN1_Receive_Msg(uint8_t *buf)
 {
- 	uint32_t i;
-	uint8_t	RxData[8];
+    CanFrame_t frame;
 
-	if(HAL_CAN_GetRxFifoFillLevel(&CAN1_Handler, CAN_RX_FIFO0) != 1)
-	{
-		return 0xF1;
-	}
+    if (buf == NULL)
+    {
+        return 0U;
+    }
 
-	if(HAL_CAN_GetRxMessage(&CAN1_Handler, CAN_RX_FIFO0, &RxHeader, RxData) != HAL_OK)
-	{
-		return 0xF2;
-	}
-	
-    for(i = 0; i < RxHeader.DLC; i++) 
-	{
-		buf[i]=RxData[i];
-	}
-    
-	return RxHeader.DLC;
+    if (CAN1_Receive_Frame(&frame, 0U) != 0U)
+    {
+        return 0U;
+    }
+
+    memcpy(buf, frame.data, frame.dlc);
+    return frame.dlc;
 }
 
+uint32_t CAN1_GetRxOverflowCount(void)
+{
+    return can1RxOverflowCount;
+}
+
+uint32_t CAN1_GetLastErrorCode(void)
+{
+    return can1LastErrorCode;
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    if (hcan->Instance != CAN1)
+    {
+        return;
+    }
+
+    while (HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0) > 0U)
+    {
+        CAN_RxHeaderTypeDef rxHeader;
+        CanFrame_t frame;
+        uint8_t rxData[8] = {0};
+
+        if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rxHeader, rxData) != HAL_OK)
+        {
+            can1LastErrorCode = HAL_CAN_GetError(hcan);
+            break;
+        }
+
+        frame.std_id = (rxHeader.IDE == CAN_ID_STD) ? rxHeader.StdId : rxHeader.ExtId;
+        frame.ide = rxHeader.IDE;
+        frame.rtr = rxHeader.RTR;
+        frame.dlc = rxHeader.DLC;
+        frame.tick = xTaskGetTickCountFromISR();
+        memcpy(frame.data, rxData, sizeof(frame.data));
+
+        if ((can1RxQueue == NULL) ||
+            (xQueueSendFromISR(can1RxQueue, &frame, &xHigherPriorityTaskWoken) != pdPASS))
+        {
+            can1RxOverflowCount++;
+        }
+    }
+
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+
+void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan)
+{
+    if (hcan->Instance == CAN1)
+    {
+        can1LastErrorCode = HAL_CAN_GetError(hcan);
+    }
+}
