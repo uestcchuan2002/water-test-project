@@ -221,17 +221,37 @@ uint8_t CAN1_Send_Frame(uint32_t std_id, const uint8_t *data, uint8_t len, uint3
     return 0U;
 }
 
+/**
+ * @brief 从CAN1接收队列中接收一帧CAN数据。
+ *
+ * 该函数尝试从全局CAN1接收队列（can1RxQueue）中获取一帧CAN消息。支持设置超时等待时间，
+ * 若指定为永久等待，则会一直阻塞直到有数据可接收。
+ *
+ * @param[in] frame        指向CanFrame_t结构体的指针，用于存储接收到的CAN帧数据。
+ *                         若为NULL，则函数立即返回错误。
+ * @param[in] timeout_ms   接收操作的超时时间（单位：毫秒）。
+ *                         若设为CAN1_RX_WAIT_FOREVER，则表示无限期等待；
+ *                         否则将转换为RTOS ticks后用于带超时的队列接收操作。
+ *
+ * @return uint8_t         函数执行结果状态码：
+ *                         - 0U：成功接收到CAN帧；
+ *                         - 1U：输入参数无效（frame为NULL或can1RxQueue未初始化）；
+ *                         - 2U：在指定超时时间内未能接收到CAN帧（仅当timeout_ms不为永久等待时可能返回）。
+ */
 uint8_t CAN1_Receive_Frame(CanFrame_t *frame, uint32_t timeout_ms)
 {
     TickType_t waitTicks;
 
+    /* 检查输入参数和接收队列是否有效 */
     if ((frame == NULL) || (can1RxQueue == NULL))
     {
         return 1U;
     }
 
+    /* 根据超时参数计算对应的RTOS ticks值 */
     waitTicks = (timeout_ms == CAN1_RX_WAIT_FOREVER) ? portMAX_DELAY : pdMS_TO_TICKS(timeout_ms);
 
+    /* 尝试从CAN1接收队列中获取一帧数据 */
     if (xQueueReceive(can1RxQueue, frame, waitTicks) != pdPASS)
     {
         return 2U;
@@ -273,27 +293,41 @@ uint32_t CAN1_GetLastErrorCode(void)
     return can1LastErrorCode;
 }
 
+/**
+ * @brief CAN接收FIFO0消息挂起回调函数
+ *
+ * 该函数是STM32 HAL库提供的CAN接收中断回调函数，当CAN1的FIFO0中有待处理的消息时被自动调用。
+ * 函数会循环读取FIFO0中所有可用的CAN帧，并将其封装为内部格式后通过FreeRTOS队列发送给任务处理。
+ * 如果队列满或不可用，则记录溢出计数。该函数设计用于在中断服务例程（ISR）上下文中执行。
+ *
+ * @param[in] hcan 指向CAN外设句柄的指针，包含CAN实例及相关状态信息
+ * @return 无返回值（void）
+ */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
+    /* 仅处理CAN1实例的中断，忽略其他CAN外设 */
     if (hcan->Instance != CAN1)
     {
         return;
     }
 
+    /* 循环处理FIFO0中所有待接收的消息，直到FIFO为空 */
     while (HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0) > 0U)
     {
         CAN_RxHeaderTypeDef rxHeader;
         CanFrame_t frame;
         uint8_t rxData[8] = {0};
 
+        /* 尝试从FIFO0中读取一条CAN消息 */
         if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rxHeader, rxData) != HAL_OK)
         {
             can1LastErrorCode = HAL_CAN_GetError(hcan);
             break;
         }
 
+        /* 将HAL库的接收头信息转换为内部统一的CAN帧格式 */
         frame.std_id = (rxHeader.IDE == CAN_ID_STD) ? rxHeader.StdId : rxHeader.ExtId;
         frame.ide = rxHeader.IDE;
         frame.rtr = rxHeader.RTR;
@@ -301,6 +335,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         frame.tick = xTaskGetTickCountFromISR();
         memcpy(frame.data, rxData, sizeof(frame.data));
 
+        /* 尝试将接收到的帧发送到FreeRTOS接收队列；若失败则增加溢出计数 */
         if ((can1RxQueue == NULL) ||
             (xQueueSendFromISR(can1RxQueue, &frame, &xHigherPriorityTaskWoken) != pdPASS))
         {
@@ -308,8 +343,10 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         }
     }
 
+    /* 若有更高优先级任务因本次操作被唤醒，则触发上下文切换 */
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
+
 
 void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan)
 {

@@ -82,7 +82,7 @@ void CanTxTask_Run(void *argument)
         {
             uint8_t txData[CAN_SENSOR_REQUEST_DLC];
             uint8_t txStatus;
-
+            /* 将当前轮询到的传感器的请求指令构建成一个帧报文 */
             if (CanSensorProtocol_BuildReadRequest(&sensorTable[i],
                                                    canRequestSequence++,
                                                    txData,
@@ -109,3 +109,5 @@ void CanTxTask_Run(void *argument)
         vTaskDelayUntil(&lastWakeTime, pdMS_TO_TICKS(pollMs));
     }
 }
+
+

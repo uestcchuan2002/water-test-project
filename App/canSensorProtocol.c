@@ -83,6 +83,16 @@ const CanSensorDescriptor_t *CanSensorProtocol_FindByResponseId(uint32_t respons
     return NULL;
 }
 
+/**
+ * @brief 计算CAN传感器协议数据的校验和（异或校验）
+ *
+ * 该函数对指定长度的数据进行逐字节异或运算，生成一个字节的校验和。
+ * 校验和用于验证CAN传感器协议中数据的完整性。
+ *
+ * @param[in] data 指向待计算校验和的数据缓冲区的指针
+ * @param[in] len_without_checksum 数据缓冲区中参与校验和计算的字节数（不包含校验和字节本身）
+ * @return 计算得到的校验和值；若输入数据指针为NULL，则返回0
+ */
 uint8_t CanSensorProtocol_Checksum(const uint8_t *data, uint8_t len_without_checksum)
 {
     uint8_t checksum = 0U;
@@ -92,6 +102,7 @@ uint8_t CanSensorProtocol_Checksum(const uint8_t *data, uint8_t len_without_chec
         return 0U;
     }
 
+    /* 对数据缓冲区中的每个字节进行异或运算，生成校验和 */
     for (uint8_t i = 0U; i < len_without_checksum; i++)
     {
         checksum ^= data[i];
@@ -99,6 +110,7 @@ uint8_t CanSensorProtocol_Checksum(const uint8_t *data, uint8_t len_without_chec
 
     return checksum;
 }
+
 
 /**
  * @brief 构建CAN传感器读取请求数据帧
