@@ -4,13 +4,29 @@
 #include "displayTask.h"
 #include "usart.h"
 #include <string.h>
+#include <storageTask.h>
 
 uint8_t screenRxDmaBuf[SCREEN_RX_DMA_SIZE];
 QueueHandle_t screenRxQueue = NULL;
 
+static const char *storageCounrt = "x0";
+
 static void Screen_ParseRxData(uint8_t *data, uint16_t len);
 static int32_t BytesToInt32_LE(const uint8_t b[4]);
 static float Screen_ReadFixed100_LE(const uint8_t b[4]);
+
+static void updateStorageCount(ScreenPage page, const char *obj, int count)
+{
+    char cmd[128];
+
+    snprintf(cmd, sizeof(cmd),
+             "%s.%s.val=%d",
+             textStrings[page],
+             obj,
+             count);
+
+    Screen_SendCmd(cmd);
+}
 
 void ScreenRx_Init(void)
 {
@@ -106,6 +122,7 @@ static void Screen_ParseRxData(uint8_t *data, uint16_t len)
         printf("stop storage\r\n");
         cmd = CMD_STOP;
         xQueueSend(g_StorageQueue, &cmd, 0);
+        updateStorageCount(STORAGE_PAGE, storageCounrt, 0);
     }
     else if (len >= 13U && memcmp(data, "start_storage", 13U) == 0)
     {

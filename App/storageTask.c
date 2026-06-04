@@ -5,10 +5,9 @@ QueueHandle_t g_StorageDataQueue = NULL;
 
 static FATFS myFatFs;
 static uint8_t fatfs_mounted = 0U;
-
-const char *storageCounrt = "x0";
+static const char *storageCounrt = "x0";
 uint8_t isRecording = 0;    // 是否正在存储
-int storage_count = 0;      // 当前存储数量
+volatile int storage_count = 0;      // 当前存储数量
 
 FRESULT FATFS_Mount0_Auto(void)
 {
@@ -62,6 +61,29 @@ FRESULT FATFS_Mount0_Auto(void)
     fatfs_mounted = 1U;
 
     return FR_OK;
+}
+
+static FRESULT FATFS_Unmount0_Auto(void)
+{
+    FRESULT f_res;
+
+    if (fatfs_mounted == 0U)
+    {
+        return FR_OK;
+    }
+
+    f_res = f_mount(NULL, "0:", 1);
+    if (f_res == FR_OK)
+    {
+        fatfs_mounted = 0U;
+        printf("[storage] Unmount success\r\n");
+    }
+    else
+    {
+        printf("[storage] Unmount error: %d\r\n", f_res);
+    }
+
+    return f_res;
 }
 
 void Storage_Init(void)
@@ -139,10 +161,15 @@ void Storage_Task(void *argument)
                         f_write(&file, header, strlen(header), &writeLen);
 
                         isRecording = 1;
-                        printf("start storage %s \r\n", fileName);
+                        printf("[storage] start storage %s \r\n", fileName);
                         storage_count = 0;
                         updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
                         osDelay(50);
+                    }
+                    else
+                    {
+                        printf("[storage] open file failed: %d\r\n", res);
+                        FATFS_Unmount0_Auto();
                     }
                 }
                 else
@@ -153,9 +180,24 @@ void Storage_Task(void *argument)
             else if (cmd == CMD_STOP && isRecording == 1)
             {
                 // 停止存储
+                res = f_sync(&file);
+                if (res != FR_OK)
+                {
+                    printf("[storage] sync file failed: %d\r\n", res);
+                }
+
+                res = f_close(&file);
+                if (res == FR_OK)
+                {
+                    printf("[storage] stop storage and file saved successfully\r\n");
+                }
+                else
+                {
+                    printf("[storage] close file failed: %d\r\n", res);
+                }
+                storage_count = 0;
+                FATFS_Unmount0_Auto();
                 isRecording = 0;
-                f_close(&file);
-                printf("[storage] stop storage and file saved successfully \n");
             }
         }
 

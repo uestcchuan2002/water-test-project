@@ -18,6 +18,8 @@
 #define STORAGE_CMD_QUEUE_LEN   5
 #define STORAGE_DATA_QUEUE_LEN   8
 
+
+
 // 存储命令
 typedef enum {
     CMD_IDLE = 0,   // 无命令
@@ -28,9 +30,10 @@ typedef enum {
 extern QueueHandle_t g_StorageQueue;
 extern QueueHandle_t g_StorageDataQueue;
 extern uint8_t isRecording;
-extern int storage_count;
+extern volatile int storage_count;
 
 void Storage_Init(void);
 void Storage_Task(void *argument);
+
 
 #endif
