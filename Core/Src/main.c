@@ -114,7 +114,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
 
-  
     MX_GPIO_Init();
     MX_DMA_Init();
     MX_USART1_UART_Init();
@@ -127,17 +126,6 @@ int main(void)
   
   /* USER CODE BEGIN 2 */
 
-
-//	lcd_init();
-//	lcd_show_string(30, 50, 200, 16, 16, "Explorer STM32F4", BLUE); 	
-//	lcd_show_string(30, 70, 200, 16, 16, "CAN TEST", BLUE); 
-//	lcd_show_string(30, 90, 200, 16, 16, "ATOM@ALIENTEK", BLUE); 
-//	lcd_show_string(30, 110, 200, 16, 16, "2017/4/14", BLUE); 	
-//	lcd_show_string(30, 130, 200, 16, 16, "LoopBack Mode", BLUE); 
-//	lcd_show_string(30, 150, 200, 16, 16, "KEY0:Send WK_UP:Mode", BLUE); 
-//	lcd_show_string(30, 170, 200, 16, 16, "Count:", RED); 	
-//	lcd_show_string(30, 190, 200, 16, 16, "Send Data:", RED); 
-//	lcd_show_string(30, 250, 200, 16, 16, "Receive Data:", RED); 
   /* USER CODE END 2 */
 
   /* Init scheduler */

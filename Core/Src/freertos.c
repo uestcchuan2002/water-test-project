@@ -236,7 +236,7 @@ void appTaskLED(void *argument)
         lcd_show_string(30, 10, 210, 16, 32, (char *)tbuf, BLUE);
         HAL_RTC_GetDate(&RTC_Handler, &RTC_DateStruct, RTC_FORMAT_BIN);
         sprintf((char *)tbuf, "Date:20%02d-%02d-%02d", RTC_DateStruct.Year, RTC_DateStruct.Month, RTC_DateStruct.Date);
-        lcd_show_string(30, 50, 210, 16, 32, (char *)tbuf, BLUE);
+        lcd_show_string(30, 50, 300, 16, 32, (char *)tbuf, BLUE);
         sprintf((char *)tbuf, "Week:%d", RTC_DateStruct.WeekDay);
         lcd_show_string(30, 90, 210, 16, 32, (char *)tbuf, BLUE);
         sprintf((char *)tbuf, "Page:%s       ", textStrings[currentPage]);

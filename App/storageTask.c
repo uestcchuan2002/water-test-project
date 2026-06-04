@@ -23,42 +23,42 @@ FRESULT FATFS_Mount0_Auto(void)
 
     if (f_res == FR_NO_FILESYSTEM)
     {
-        printf("No filesystem, formatting...\r\n");
+        printf("[storage] No filesystem, formatting...\r\n");
 
         static uint8_t aMountBuffer[4096];
 
         f_res = f_mkfs("0:", 0, 0, aMountBuffer, sizeof(aMountBuffer));
         if (f_res != FR_OK)
         {
-            printf("Format failed: %d\r\n", f_res);
+            printf("[storage] Format failed: %d\r\n", f_res);
             fatfs_mounted = 0U;
             return f_res;
         }
 
-        printf("Format success\r\n");
+        printf("[storage] Format success\r\n");
 
         f_mount(NULL, "0:", 1);
 
         f_res = f_mount(&myFatFs, "0:", 1);
         if (f_res != FR_OK)
         {
-            printf("Mount failed after format: %d\r\n", f_res);
+            printf("[storage] Mount failed after format: %d\r\n", f_res);
             fatfs_mounted = 0U;
             return f_res;
         }
 
-        printf("Mount success\r\n");
+        printf("[storage] Mount success\r\n");
         fatfs_mounted = 1U;
         return FR_OK;
     }
     else if (f_res != FR_OK)
     {
-        printf("Mount error: %d\r\n", f_res);
+        printf("[storage] Mount error: %d\r\n", f_res);
         fatfs_mounted = 0U;
         return f_res;
     }
 
-    printf("Mount success\r\n");
+    printf("[storage] Mount success\r\n");
     fatfs_mounted = 1U;
 
     return FR_OK;
@@ -75,6 +75,7 @@ void Storage_Init(void)
     if (g_StorageDataQueue == NULL)
     {
         g_StorageDataQueue = xQueueCreate(STORAGE_DATA_QUEUE_LEN, sizeof(sensor_data_t));
+        configASSERT(g_StorageDataQueue != NULL);
     }
 }
 
@@ -93,11 +94,9 @@ static void updateStorageCount(ScreenPage page, const char *obj, int count)
 
 void Storage_Task(void *argument)
 {
-    FIL file;                // 文件对象
-    FRESULT res;             // FatFS 返回值
-    
-
-    char fileName[64]; // 文件名
+    FIL file;                   // 文件对象
+    FRESULT res;                // FatFS 返回值
+    char fileName[64];          // 文件名
     uint32_t writeLen;
 
     RTC_TimeTypeDef RTC_TimeStruct;
@@ -105,7 +104,6 @@ void Storage_Task(void *argument)
 
     sensor_data_t recv_data;
     
-
     for (;;)
     {
         StorageCmd_t cmd;
@@ -141,7 +139,7 @@ void Storage_Task(void *argument)
                         f_write(&file, header, strlen(header), &writeLen);
 
                         isRecording = 1;
-                        printf("开始存储：%s\n", fileName);
+                        printf("start storage %s \r\n", fileName);
                         storage_count = 0;
                         updateStorageCount(STORAGE_PAGE, storageCounrt, storage_count);
                         osDelay(50);
@@ -149,7 +147,7 @@ void Storage_Task(void *argument)
                 }
                 else
                 {
-                    printf("磁盘挂载失败\r\n");
+                    printf("[storage] disk mount faild \r\n");
                 }
             }
             else if (cmd == CMD_STOP && isRecording == 1)
@@ -157,7 +155,7 @@ void Storage_Task(void *argument)
                 // 停止存储
                 isRecording = 0;
                 f_close(&file);
-                printf("停止存储，文件保存成功\n");
+                printf("[storage] stop storage and file saved successfully \n");
             }
         }
 

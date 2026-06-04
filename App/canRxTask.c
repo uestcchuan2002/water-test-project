@@ -44,11 +44,12 @@ void CanRxTask_Run(void *argument)
                 CanRxTask_UpdateLatest(&sample);
                 CanRxTask_PublishSample(&sample);
 
-                printf("--can rx %s=%.3f mg/L status=%u seq=%u\r\n",
-                       sample.name,
-                       sample.value,
-                       sample.status,
-                       sample.sequence);
+                /* 调试打印 */
+                // printf("--can rx %s=%.3f mg/L status=%u seq=%u\r\n",
+                //        sample.name,
+                //        sample.value,
+                //        sample.status,
+                //        sample.sequence);
             }
             else if (status != CAN_SENSOR_PARSE_UNKNOWN_ID)
             {
